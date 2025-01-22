@@ -50,7 +50,7 @@ const weatherVideos = {
     "windy-morning": "videos/windy-morning-cat.mp4",
     "windy-evening": "videos/windy-evening-cat.mp4",
     "windy-night": "videos/windy-night-cat.mp4",
-    "default": "videos/Default.mp4"
+    "default": "videos/default.mp4"
 };
 
 const weatherMusic = {
