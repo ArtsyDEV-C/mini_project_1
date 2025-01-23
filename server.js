@@ -5,6 +5,7 @@ const connectDB = require('./db');
 const User = require('./models/User');
 const City = require('./models/City');
 const dotenv = require('dotenv');
+const methodOverride = require('method-override');
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(methodOverride('_method'));
 
 // Serve static files
 app.use(express.static('public'));
@@ -82,7 +84,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 // Start server
 const PORT = process.env.PORT || 5001;
