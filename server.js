@@ -69,6 +69,21 @@ app.post('/cities', async (req, res) => {
   }
 });
 
+const cors = require('cors'); // Add this line
+
+// Middleware
+app.use(cors()); // Add this line
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // Start server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
