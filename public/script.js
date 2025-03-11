@@ -541,3 +541,93 @@ recognition.onresult = (event) => {
     fetchWeather('current location');
   }
 };
+
+function onSignIn(googleUser) {
+    const profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId());
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail());
+
+    // Update profile section with Google user info
+    document.getElementById('profile-picture').src = profile.getImageUrl();
+    alert('Google Sign-In successful');
+}
+
+// Profile picture upload
+const profileForm = document.querySelector('#profile-form');
+const profilePictureInput = document.querySelector('#profile-picture-input');
+const profilePicture = document.querySelector('#profile-picture');
+
+profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('profile-picture', profilePictureInput.files[0]);
+
+    try {
+        const response = await fetch('/upload-profile-picture', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            profilePicture.src = data.profilePictureUrl;
+            alert('Profile picture uploaded successfully');
+        } else {
+            alert('Error uploading profile picture');
+        }
+    } catch (error) {
+        alert('Error uploading profile picture');
+    }
+});
+
+// Register user
+const registerForm = document.querySelector('#register-form');
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert('User registered successfully');
+            // Stay on the same page and update UI if needed
+        } else {
+            alert('Error registering user');
+        }
+    } catch (error) {
+        alert('Error registering user');
+    }
+});
+
+// Login user
+const loginForm = document.querySelector('#login-form');
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(loginForm);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert('User logged in successfully');
+            // Stay on the same page and update UI if needed
+        } else {
+            alert('Error logging in user');
+        }
+    } catch (error) {
+        alert('Error logging in user');
+    }
+});

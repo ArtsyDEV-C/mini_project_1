@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
 </head>
 <body>
     <img src="/images/background.jpg" alt="Background Image">
@@ -41,6 +43,9 @@
             </form>
         </div>
     </div>
+
+    <!-- Google Sign-In Button -->
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
     <!-- Profile Section -->
     <div id="profile-section">
