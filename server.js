@@ -10,12 +10,24 @@ const axios = require('axios'); // Add this line
 const cors = require('cors'); // Add this line
 const twilio = require('twilio');
 const sgMail = require('@sendgrid/mail');
+const MongoStore = require('connect-mongo');
+const mongoose = require('mongoose'); // Add this line
 
 dotenv.config();
 
 const app = express();
 
 // Connect to MongoDB
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    process.exit(1);
+  }
+};
+
 connectDB();
 
 // Middleware
@@ -26,6 +38,10 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: 'sessions'
+  })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
