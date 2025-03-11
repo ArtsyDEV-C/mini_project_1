@@ -6,12 +6,12 @@ const User = require('./models/User');
 const City = require('./models/City');
 const dotenv = require('dotenv');
 const methodOverride = require('method-override');
-const axios = require('axios'); // Add this line
-const cors = require('cors'); // Add this line
+const axios = require('axios');
+const cors = require('cors');
 const twilio = require('twilio');
 const sgMail = require('@sendgrid/mail');
 const MongoStore = require('connect-mongo');
-const mongoose = require('mongoose'); // Add this line
+const mongoose = require('mongoose');
 
 dotenv.config();
 
@@ -31,7 +31,7 @@ const connectDB = async () => {
 connectDB();
 
 // Middleware
-app.use(cors()); // Add this line
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
