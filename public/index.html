@@ -23,9 +23,9 @@
         <div class="auth-form">
             <h2>Register</h2>
             <form id="register-form" method="POST" action="/register">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Register</button>
+                <input type="text" name="username" placeholder="Username" required class="form-control mb-2">
+                <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
             </form>
         </div>
 
@@ -33,9 +33,9 @@
         <div class="auth-form">
             <h2>Login</h2>
             <form id="login-form" method="POST" action="/login">
-                <input type="text" name="username" placeholder="Username" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Login</button>
+                <input type="text" name="username" placeholder="Username" required class="form-control mb-2">
+                <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
         </div>
     </div>
@@ -86,13 +86,17 @@
     <!-- Disaster Warnings Section -->
     <div id="disaster-warnings"></div>
 
+    <!-- Travel Suggestions Section -->
+    <div id="travel-suggestions" class="travel-suggestions-container"></div>
+
     <!-- Map Section -->
-    <div id="map" style="height: 500px;"></div>
+    <div id="map" style="height: 500px; border-radius: 10px; margin-top: 20px;"></div>
 
     <!-- Video and Music Section -->
     <video id="weather-video" width="100%" height="auto" muted autoplay loop src="videos/default.mp4"></video>
     <audio id="weather-music" loop></audio>
     <button id="play-music">Play Music</button>
+    <button id="voice-command" class="btn btn-info mt-3">Voice Command</button>
 
     <!-- Chat Section -->
     <div id="chat-container">

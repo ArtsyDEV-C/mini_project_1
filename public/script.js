@@ -496,3 +496,18 @@ const fetchWeatherDataAndSuggestTravelTimes = async () => {
 
 // Call the function to fetch weather data and suggest travel times
 fetchWeatherDataAndSuggestTravelTimes();
+
+// Voice Command Button
+const voiceCommandButton = document.getElementById('voice-command');
+voiceCommandButton.addEventListener('click', () => {
+    recognition.start();
+});
+
+// Example using Web Speech API
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.onresult = (event) => {
+  const command = event.results[0][0].transcript;
+  if (command.includes('weather')) {
+    fetchWeather('current location');
+  }
+};
