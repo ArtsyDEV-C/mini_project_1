@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neko Global Weather 2</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
-
     <!-- Header Section -->
     <header>
         <video src="videos/logo.mp4" autoplay loop muted id="logo-video"></video>
@@ -89,6 +90,7 @@
     <!-- Video and Music Section -->
     <video id="weather-video" width="100%" height="auto" muted autoplay loop src="videos/default.mp4"></video>
     <audio id="weather-music" loop></audio>
+    <button id="play-music">Play Music</button>
 
     <!-- Chat Section -->
     <div id="chat-container">
@@ -112,5 +114,11 @@
 
     <script src="script.js"></script>
     <script src="chatbot.js"></script>
+    <script>
+        // Example of how to use the suggested code change
+        const weatherIcon = document.getElementById('weather-icon');
+        const weather = { icon: '01d' }; // Example weather data
+        weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
+    </script>
 </body>
 </html>

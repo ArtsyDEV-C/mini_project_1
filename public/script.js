@@ -203,7 +203,7 @@ function updateWeatherUI(data) {
 
     // Set weather description and icon
     weatherDescription.innerHTML = weather.description;
-    weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
+    weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
 
     // Set other weather data
     windSpeedElement.innerText = `${wind.speed} m/s`;
@@ -371,7 +371,7 @@ const provideRecommendations = (weather) => {
   } else if (weather.main.temp > 30) {
     recommendations.push('Wear light clothes');
   }
-  if (weather.weather[0].main === 'Rain') {
+  if (weather.main === 'Rain') {
     recommendations.push('Carry an umbrella');
   }
   // Display recommendations
@@ -438,3 +438,8 @@ const animate = () => {
   renderer.render(scene, camera);
 };
 animate();
+
+const playMusicButton = document.getElementById('play-music');
+playMusicButton.addEventListener('click', () => {
+    weatherMusicElement.play();
+});
