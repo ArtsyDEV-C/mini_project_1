@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const passport = require('./config/passport');
-const connectDB = require('./db');
+const connectDB = require('./db'); // Import the connectDB function from db.js
 const User = require('./models/User');
 const City = require('./models/City');
 const dotenv = require('dotenv');
@@ -18,16 +18,6 @@ dotenv.config();
 const app = express();
 
 // Connect to MongoDB
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB connected successfully');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
-    process.exit(1);
-  }
-};
-
 connectDB();
 
 // Middleware
