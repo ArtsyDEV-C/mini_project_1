@@ -77,9 +77,25 @@
     <!-- 10-Day Forecast Section -->
     <div id="forecast" class="forecast-container"></div>
 
+    <!-- Recommendations Section -->
+    <div id="recommendations"></div>
+
+    <!-- Disaster Warnings Section -->
+    <div id="disaster-warnings"></div>
+
+    <!-- Map Section -->
+    <div id="map" style="height: 500px;"></div>
+
     <!-- Video and Music Section -->
     <video id="weather-video" width="100%" height="auto" muted autoplay loop src="videos/default.mp4"></video>
     <audio id="weather-music" loop></audio>
+
+    <!-- Chat Section -->
+    <div id="chat-container">
+        <div id="chatbox" class="chatbox"></div>
+        <input type="text" id="chat-input" placeholder="Ask me anything...">
+        <button id="send-btn">Send</button>
+    </div>
 
     <!-- Loading Spinner -->
     <div id="loading" class="loading-spinner" style="display: none;">
@@ -95,5 +111,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

@@ -19,10 +19,12 @@ const weatherBackgrounds = {
     "thunderstorm-evening": "images/thunderstorm-sky-evening.jpg",
     "hazy-day": "images/hazy-sky-day.jpg",
     "hazy-night": "images/hazy-sky-night.jpg",
-    "foggy-day": "images/foggy-sky-day.jpg",
+    "foggy-morning": "images/foggy-sky-day.jpg",
     "foggy-night": "images/foggy-sky-night.jpg",
-    "windy-day": "images/windy-sky-day.jpg",
-    "windy-night": "images/windy-sky-night.jpg"
+    "foggy-evening": "images/foggy-sky-evening.jpg",
+    "windy-morning": "images/windy-sky-day.jpg",
+    "windy-night": "images/windy-sky-night.jpg",
+    "windy-evening": "images/windy-sky-eveing.jpg",
 };
 
 const weatherVideos = {
@@ -107,7 +109,7 @@ function formatTime(date) {
     const minutes = date.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours ? 12 : 12; // the hour '0' should be '12'
     const strMinutes = minutes < 10 ? '0' + minutes : minutes;
     return `${hours}:${strMinutes} ${ampm}`;
 }
@@ -230,6 +232,9 @@ function updateWeatherUI(data) {
         <div><strong>Day 9:</strong> Clear - 24°C</div>
         <div><strong>Day 10:</strong> Snowy - 5°C</div>
     `;
+
+    // Provide recommendations based on weather
+    provideRecommendations(weather);
 }
 
 // Fetch weather data from API
@@ -252,6 +257,15 @@ async function fetchWeather(city) {
         loadingSpinner.style.display = 'none';
     }
 }
+
+// Get user's current location
+navigator.geolocation.getCurrentPosition(async (position) => {
+    const { latitude, longitude } = position.coords;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    updateWeatherUI(data);
+});
 
 // Event listener for search button
 searchButton.addEventListener('click', () => {
@@ -339,3 +353,88 @@ saveCityForm.addEventListener('submit', async (e) => {
         alert('Error saving city');
     }
 });
+
+// Example function to trigger alert
+const triggerAlert = async (type, to, message) => {
+  await fetch('/send-alert', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type, to, message })
+  });
+};
+
+// Function to provide recommendations based on weather
+const provideRecommendations = (weather) => {
+  const recommendations = [];
+  if (weather.main.temp < 15) {
+    recommendations.push('Wear warm clothes');
+  } else if (weather.main.temp > 30) {
+    recommendations.push('Wear light clothes');
+  }
+  if (weather.weather[0].main === 'Rain') {
+    recommendations.push('Carry an umbrella');
+  }
+  // Display recommendations
+  document.getElementById('recommendations').innerHTML = recommendations.join(', ');
+};
+
+// Function to display disaster warnings
+const displayDisasterWarnings = (warnings) => {
+  const warningContainer = document.getElementById('disaster-warnings');
+  warningContainer.innerHTML = warnings.map(warning => `<div>${warning}</div>`).join('');
+};
+
+// Initialize map
+const map = L.map('map').setView([51.505, -0.09], 13);
+
+// Add tile layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// Add weather data layer
+const weatherLayer = L.layerGroup().addTo(map);
+
+// Function to update weather layer
+const updateWeatherLayer = (data) => {
+  weatherLayer.clearLayers();
+  data.forEach(point => {
+    L.marker([point.lat, point.lon]).addTo(weatherLayer)
+      .bindPopup(`<b>${point.weather}</b><br>${point.temp}°C`);
+  });
+};
+
+// Example using Web Speech API
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.onresult = (event) => {
+  const command = event.results[0][0].transcript;
+  if (command.includes('weather')) {
+    fetchWeather('current location');
+  }
+};
+recognition.start();
+
+// Example using Three.js
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Add weather data to scene
+const addWeatherDataToScene = (data) => {
+  data.forEach(point => {
+    const geometry = new THREE.SphereGeometry(0.1, 32, 32);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const sphere = new THREE.Mesh(geometry, material);
+    sphere.position.set(point.lat, point.lon, 0);
+    scene.add(sphere);
+  });
+};
+
+// Render scene
+const animate = () => {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+};
+animate();
