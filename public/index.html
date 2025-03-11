@@ -5,129 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neko Global Weather</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Nunito:wght@400;600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
 </head>
 <body>
-    <img src="/images/background.jpg" alt="Background Image">
     <!-- Header Section -->
     <header>
-        <video src="videos/logo.mp4" autoplay loop muted id="logo-video"></video>
-        <h1 class="website-title">Neko Global Weather</h1>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="/images/globe-cat-icon.png" alt="Globe Cat Icon">
+                <h1 class="website-title">Neko Global Weather</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Forecast</a></li>
+                <li><a href="#">Radar</a></li>
+                <li><a href="#">AI Cat Insights</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- User Authentication Section -->
-    <div class="auth-container">
-        <!-- Registration Form -->
-        <div class="auth-form">
-            <h2>Register</h2>
-            <form id="register-form" method="POST" action="/register">
-                <input type="text" name="username" placeholder="Username" required class="form-control mb-2">
-                <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
-                <button type="submit" class="btn btn-primary btn-block">Register</button>
-            </form>
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Enter city..." autocomplete="off">
+            <button id="search-button">Search</button>
+            <video src="videos/search.mp4" autoplay loop muted id="search-video"></video>
         </div>
+    </section>
 
-        <!-- Login Form -->
-        <div class="auth-form">
-            <h2>Login</h2>
-            <form id="login-form" method="POST" action="/login">
-                <input type="text" name="username" placeholder="Username" required class="form-control mb-2">
-                <input type="password" name="password" placeholder="Password" required class="form-control mb-2">
-                <button type="submit" class="btn btn-primary btn-block">Login</button>
-            </form>
+    <!-- Main Weather Display -->
+    <section class="weather-display">
+        <div class="weather-card">
+            <div id="city-name" class="weather-info"></div>
+            <div id="date-time" class="weather-info"></div>
+            <div id="weather-icon" class="weather-info"></div>
+            <div id="weather-temperature" class="weather-info"></div>
+            <div id="weather-description" class="weather-info"></div>
+            <div class="weather-stats">
+                <div><strong>Wind Speed:</strong> <span id="wind-speed"></span></div>
+                <div><strong>Humidity:</strong> <span id="humidity"></span></div>
+                <div><strong>UV Index:</strong> <span id="uv-index"></span></div>
+                <div><strong>Pressure:</strong> <span id="pressure"></span></div>
+                <div><strong>Sunrise:</strong> <span id="sunrise"></span></div>
+                <div><strong>Sunset:</strong> <span id="sunset"></span></div>
+                <div><strong>Local Time:</strong> <span id="local-time"></span></div>
+                <div><strong>IST Time:</strong> <span id="ist-time"></span></div>
+            </div>
         </div>
-    </div>
-
-    <!-- Google Sign-In Button -->
-    <div class="google-signin-container">
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    </div>
-
-    <!-- Profile Section -->
-    <div id="profile-section">
-        <h2>User Profile</h2>
-        <img id="profile-picture" src="/images/default-profile.png" alt="Profile Picture">
-        <form id="profile-form">
-            <input type="file" id="profile-picture-input" accept="image/*">
-            <button type="submit">Upload</button>
-        </form>
-    </div>
-
-    <!-- Search Bar Section -->
-    <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Enter city..." autocomplete="off">
-        <button id="search-button">Search</button>
-        <video src="videos/search.mp4" autoplay loop muted id="search-video"></video>
-    </div>
-
-    <!-- Current Weather Section -->
-    <div class="weather-container">
-        <div id="city-name" class="weather-info"></div>
-        <div id="date-time" class="weather-info"></div>
-        <div id="weather-icon" class="weather-info"></div>
-        <div id="weather-temperature" class="weather-info"></div>
-        <div id="weather-description" class="weather-info"></div>
-
-        <!-- Weather Stats -->
-        <div class="weather-stats">
-            <div><strong>Wind Speed:</strong> <span id="wind-speed"></span></div>
-            <div><strong>Humidity:</strong> <span id="humidity"></span></div>
-            <div><strong>UV Index:</strong> <span id="uv-index"></span></div>
-            <div><strong>Pressure:</strong> <span id="pressure"></span></div>
-            <div><strong>Sunrise:</strong> <span id="sunrise"></span></div>
-            <div><strong>Sunset:</strong> <span id="sunset"></span></div>
-            <div><strong>Local Time:</strong> <span id="local-time"></span></div>
-            <div><strong>IST Time:</strong> <span id="ist-time"></span></div>
-        </div>
-    </div>
-
-    <!-- Save City Section -->
-    <div class="save-city-container">
-        <h2>Save City</h2>
-        <form id="save-city-form" method="POST" action="/cities">
-            <input type="text" name="city" placeholder="City Name" required>
-            <button type="submit">Save City</button>
-        </form>
-    </div>
+    </section>
 
     <!-- 10-Day Forecast Section -->
-    <div id="forecast" class="forecast-container"></div>
+    <section class="forecast-section">
+        <h2>10-Day Forecast</h2>
+        <div id="forecast" class="forecast-container"></div>
+    </section>
 
-    <!-- Recommendations Section -->
-    <div id="recommendations"></div>
+    <!-- Interactive Radar Map -->
+    <section class="radar-section">
+        <h2>Interactive Radar Map</h2>
+        <div id="map" style="height: 500px; border-radius: 10px; margin-top: 20px;"></div>
+    </section>
 
-    <!-- Disaster Warnings Section -->
-    <div id="disaster-warnings"></div>
-
-    <!-- Travel Suggestions Section -->
-    <div id="travel-suggestions" class="travel-suggestions-container"></div>
-
-    <!-- Map Section -->
-    <div id="map" style="height: 500px; border-radius: 10px; margin-top: 20px;"></div>
-
-    <!-- Video and Music Section -->
-    <video id="weather-video" width="100%" height="auto" muted autoplay loop src="videos/default.mp4"></video>
-    <audio id="weather-music" loop></audio>
-    <button id="play-music">Play Music</button>
-    <button id="voice-command" class="btn btn-info mt-3">Voice Command</button>
-
-    <!-- Chat Section -->
-    <div id="chat-bubble" class="chat-bubble">
-        <img src="images/chat-icon.png" alt="Chat Icon">
-    </div>
-    <div id="chat-container" class="chat-container">
-        <div id="chatbox" class="chatbox"></div>
-        <input type="text" id="chat-input" placeholder="Ask me anything...">
-        <button id="send-btn">Send</button>
-    </div>
-
-    <!-- Loading Spinner -->
-    <div id="loading" class="loading-spinner" style="display: none;">
-        <div class="spinner"></div>
-        <p>Loading...</p>
-    </div>
+    <!-- AI Cat Insights Section -->
+    <section class="ai-cat-insights">
+        <h2>AI Cat Insights</h2>
+        <div id="ai-cat-video">
+            <video src="videos/default.mp4" autoplay loop muted></video>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
