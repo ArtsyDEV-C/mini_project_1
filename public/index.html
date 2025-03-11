@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neko Global Weather 2</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Weather Project</title>
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+    <img src="/images/background.jpg" alt="Background Image">
     <!-- Header Section -->
     <header>
         <video src="videos/logo.mp4" autoplay loop muted id="logo-video"></video>
@@ -38,6 +40,16 @@
                 <button type="submit" class="btn btn-primary btn-block">Login</button>
             </form>
         </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div id="profile-section">
+        <h2>User Profile</h2>
+        <img id="profile-picture" src="/images/default-profile.png" alt="Profile Picture">
+        <form id="profile-form">
+            <input type="file" id="profile-picture-input" accept="image/*">
+            <button type="submit">Upload</button>
+        </form>
     </div>
 
     <!-- Search Bar Section -->
@@ -118,6 +130,7 @@
         <p>Contact: shreejithisdumb@gmail.com | Phone: 7904106363</p>
     </footer>
 
+    <script src="/js/script.js"></script>
     <script src="script.js"></script>
     <script src="chatbot.js"></script>
     <script>

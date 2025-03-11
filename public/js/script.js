@@ -1,0 +1,13 @@
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.onresult = (event) => {
+  const command = event.results[0][0].transcript;
+  if (command.includes('weather')) {
+    fetchWeather('current location');
+  }
+};
+
+// Voice Command Button
+const voiceCommandButton = document.getElementById('voice-command');
+voiceCommandButton.addEventListener('click', () => {
+    recognition.start();
+});

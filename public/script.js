@@ -93,6 +93,34 @@ const registerForm = document.querySelector('#register-form');
 const loginForm = document.querySelector('#login-form');
 const saveCityForm = document.querySelector('#save-city-form');
 
+// Profile picture upload
+const profileForm = document.querySelector('#profile-form');
+const profilePictureInput = document.querySelector('#profile-picture-input');
+const profilePicture = document.querySelector('#profile-picture');
+
+profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('profile-picture', profilePictureInput.files[0]);
+
+    try {
+        const response = await fetch('/upload-profile-picture', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            profilePicture.src = data.profilePictureUrl;
+            alert('Profile picture uploaded successfully');
+        } else {
+            alert('Error uploading profile picture');
+        }
+    } catch (error) {
+        alert('Error uploading profile picture');
+    }
+});
+
 // API key for weather data (get your own from https://openweathermap.org/api)
 const API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
 
@@ -300,6 +328,7 @@ registerForm.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert('User registered successfully');
+            // Stay on the same page and update UI if needed
         } else {
             alert('Error registering user');
         }
@@ -323,6 +352,7 @@ loginForm.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert('User logged in successfully');
+            // Stay on the same page and update UI if needed
         } else {
             alert('Error logging in user');
         }
