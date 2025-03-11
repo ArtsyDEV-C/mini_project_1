@@ -139,6 +139,41 @@ app.post('/send-emergency-alert', (req, res) => {
   res.send('Emergency alert sent');
 });
 
+// Example route to fetch weather data for map
+app.get('/api/weather-data', async (req, res) => {
+  try {
+    const weatherData = await getWeatherData(); // Implement this function to fetch weather data
+    res.json(weatherData);
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    res.status(500).send('Error fetching weather data');
+  }
+});
+
+// Example route to save user preferences
+app.post('/api/save-preferences', async (req, res) => {
+  try {
+    const { userId, preferences } = req.body;
+    await User.findByIdAndUpdate(userId, { preferences });
+    res.send('Preferences saved');
+  } catch (error) {
+    console.error('Error saving preferences:', error);
+    res.status(500).send('Error saving preferences');
+  }
+});
+
+// Example route to fetch user preferences
+app.get('/api/preferences/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    res.json(user.preferences);
+  } catch (error) {
+    console.error('Error fetching preferences:', error);
+    res.status(500).send('Error fetching preferences');
+  }
+});
+
 // Start server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

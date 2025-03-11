@@ -404,6 +404,16 @@ const updateWeatherLayer = (data) => {
   });
 };
 
+// Example function to fetch weather data and update map
+const fetchWeatherDataForMap = async () => {
+  const response = await fetch('/api/weather-data');
+  const data = await response.json();
+  updateWeatherLayer(data);
+};
+
+// Call the function to fetch weather data and update map
+fetchWeatherDataForMap();
+
 // Example using Web Speech API
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 recognition.onresult = (event) => {
@@ -443,3 +453,46 @@ const playMusicButton = document.getElementById('play-music');
 playMusicButton.addEventListener('click', () => {
     weatherMusicElement.play();
 });
+
+// Function to save user preferences
+const savePreferences = async (preferences) => {
+  const response = await fetch('/api/save-preferences', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: 'USER_ID', preferences })
+  });
+  if (response.ok) {
+    alert('Preferences saved');
+  } else {
+    alert('Error saving preferences');
+  }
+};
+
+// Function to fetch user preferences
+const fetchPreferences = async () => {
+  const response = await fetch('/api/preferences/USER_ID');
+  const preferences = await response.json();
+  // Update UI with preferences
+};
+
+// Example function to suggest best times for travel
+const suggestBestTravelTimes = (weatherData) => {
+  const suggestions = [];
+  weatherData.forEach(day => {
+    if (day.weather === 'Clear') {
+      suggestions.push(`Good day for travel: ${day.date}`);
+    }
+  });
+  // Display suggestions
+  document.getElementById('travel-suggestions').innerHTML = suggestions.join('<br>');
+};
+
+// Example function to fetch weather data and suggest travel times
+const fetchWeatherDataAndSuggestTravelTimes = async () => {
+  const response = await fetch('/api/weather-data');
+  const weatherData = await response.json();
+  suggestBestTravelTimes(weatherData);
+};
+
+// Call the function to fetch weather data and suggest travel times
+fetchWeatherDataAndSuggestTravelTimes();
