@@ -1,0 +1,329 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url('/images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #333;
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Section */
+header {
+    text-align: center;
+    padding: 20px 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    color: #1E3A5F;
+}
+
+/* Auth Section */
+.auth-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.auth-form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 45%;
+}
+
+.auth-form h2 {
+    margin-bottom: 20px;
+    color: #1E3A5F;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.auth-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1E3A5F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-form button:hover {
+    background-color: #163A5F;
+}
+
+/* Google Sign-In Button */
+.google-signin-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Profile Section */
+#profile-section {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#profile-section img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+#profile-section form {
+    display: inline-block;
+}
+
+#profile-section input {
+    display: block;
+    margin: 10px auto;
+}
+
+/* Search Bar Section */
+.search-bar {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search-bar input {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #1E3A5F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #163A5F;
+}
+
+/* Weather Section */
+.weather-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    text-align: center;
+}
+
+.weather-info {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+
+.weather-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.weather-stats div {
+    width: 45%;
+    margin-bottom: 10px;
+}
+
+.weather-stats strong {
+    font-weight: bold;
+}
+
+/* Save City Section */
+.save-city-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.save-city-container input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.save-city-container button {
+    padding: 10px 20px;
+    background-color: #1E3A5F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-city-container button:hover {
+    background-color: #163A5F;
+}
+
+/* Forecast Section */
+.forecast-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+/* Map Section */
+#map {
+    height: 500px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Chat Section */
+.chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #1E3A5F;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chat-bubble img {
+    width: 30px;
+    height: 30px;
+}
+
+.chat-container {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.chat-container.active {
+    display: block;
+}
+
+#chatbox {
+    height: 200px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.message {
+    margin: 5px 0;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.user {
+    background: lightblue;
+    text-align: right;
+}
+
+.bot {
+    background: lightgray;
+    text-align: left;
+}
+
+#chat-input {
+    width: 80%;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+#send-btn {
+    width: 15%;
+    padding: 5px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.spinner {
+    border: 8px solid rgba(255, 255, 255, 0.1);
+    border-top: 8px solid #1E3A5F;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+footer p {
+    margin: 5px 0;
+    color: #333;
+}
