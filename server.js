@@ -1,9 +1,7 @@
-require('dotenv').config(); // Load environment variables
-
 const express = require('express');
 const session = require('express-session');
 const passport = require('./config/passport');
-const connectDB = require('./db'); // Import the connectDB function from db.js
+const connectDB = require('./db');
 const User = require('./models/User');
 const City = require('./models/City');
 const methodOverride = require('method-override');
@@ -12,10 +10,8 @@ const cors = require('cors');
 const twilio = require('twilio');
 const sgMail = require('@sendgrid/mail');
 const MongoStore = require('connect-mongo');
-const mongoose = require('mongoose');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
 
 // Connect to MongoDB
 connectDB();
@@ -40,166 +36,91 @@ app.use(methodOverride('_method'));
 // Serve static files
 app.use(express.static('public'));
 
+// Twilio setup
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+
+// SendGrid setup
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Function to send SMS alert
-const sendSMSAlert = (to, message) => {
-  twilioClient.messages.create({
-    body: message,
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: to
-  });
+// Send SMS Alert
+const sendSMSAlert = async (to, message) => {
+  try {
+    await twilioClient.messages.create({
+      body: message,
+      from: process.env.TWILIO_PHONE,
+      to
+    });
+  } catch (error) {
+    console.error('Error sending SMS:', error);
+  }
 };
 
-// Function to send email alert
-const sendEmailAlert = (to, subject, message) => {
-  const msg = {
-    to: to,
-    from: process.env.SENDGRID_EMAIL,
-    subject: subject,
-    text: message,
-  };
-  sgMail.send(msg);
+// Send Email Alert
+const sendEmailAlert = async (to, subject, message) => {
+  try {
+    await sgMail.send({
+      to,
+      from: process.env.SENDGRID_EMAIL,
+      subject,
+      text: message
+    });
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 };
 
-// Define the getWeatherData function
-async function getWeatherData(city) {
-    const API_KEY = process.env.OPENWEATHERMAP_API_KEY;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
-    try {
-        const response = await axios.get(url);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching weather data:', error.message);
-        throw error;
-    }
-}
+// Weather API Proxy
+app.get('/api/weather/:city', async (req, res) => {
+  try {
+    const city = req.params.city;
+    const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.OPENWEATHER_API_KEY}`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).send('Error fetching weather data');
+  }
+});
 
-// Routes
+// User Registration
 app.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).send('User already exists');
-    }
     const newUser = new User({ username, password });
     await newUser.save();
-    res.status(201).send('User registered');
+    res.status(201).send('User registered successfully');
   } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).send('Error registering user');
+    res.status(500).send('Registration failed');
   }
 });
 
-app.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.status(400).send(info.message);
-    req.logIn(user, (err) => {
-      if (err) return next(err);
-      return res.send('Logged in');
-    });
-  })(req, res, next);
+// User Login
+app.post('/login', passport.authenticate('local'), (req, res) => {
+  res.send('Logged in successfully');
 });
 
-app.post('/cities', async (req, res) => {
-  try {
-    if (!req.isAuthenticated()) return res.status(401).send('Not authenticated');
-
-    const { city } = req.body;
-    const newCity = new City({ name: city, userId: req.user.id });
-    await newCity.save();
-    res.status(201).send('City saved');
-  } catch (error) {
-    console.error('Error saving city:', error);
-    res.status(500).send('Error saving city');
-  }
-});
-
+// Chat endpoint
 app.post('/chat', async (req, res) => {
   try {
     const userMessage = req.body.message;
-    
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-      model: 'gpt-4',
-      messages: [{ role: 'system', content: 'You are a helpful weather assistant.' },
-                 { role: 'user', content: userMessage }]
+      model: 'gpt-4-turbo',
+      messages: [
+        { role: 'system', content: 'You are a helpful weather assistant.' },
+        { role: 'user', content: userMessage }
+      ]
     }, {
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         'Content-Type': 'application/json'
       }
     });
-
-    res.json({ response: response.data.choices[0].message.content });
+    res.json(response.data);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ response: 'Sorry, something went wrong.' });
+    res.status(500).send('Error processing chat request');
   }
 });
 
-// Example route to send alerts
-app.post('/send-alert', (req, res) => {
-  const { type, to, message } = req.body;
-  if (type === 'sms') {
-    sendSMSAlert(to, message);
-  } else if (type === 'email') {
-    sendEmailAlert(to, 'Weather Alert', message);
-  }
-  res.send('Alert sent');
-});
-
-// Example route to send emergency alerts
-app.post('/send-emergency-alert', (req, res) => {
-  const { to, message } = req.body;
-  sendSMSAlert(to, message);
-  res.send('Emergency alert sent');
-});
-
-// Example route to fetch weather data for map
-app.get('/api/weather-data', async (req, res) => {
-  const city = req.query.city || 'New York';
-  try {
-    const weatherData = await getWeatherData(city);
-    res.json(weatherData);
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-    res.status(500).json({ error: 'Error fetching weather data' });
-  }
-});
-
-// Example route to save user preferences
-app.post('/api/save-preferences', async (req, res) => {
-  try {
-    const { userId, preferences } = req.body;
-    await User.findByIdAndUpdate(userId, { preferences });
-    res.send('Preferences saved');
-  } catch (error) {
-    console.error('Error saving preferences:', error);
-    res.status(500).send('Error saving preferences');
-  }
-});
-
-// Example route to fetch user preferences
-app.get('/api/preferences/:userId', async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId);
-    res.json(user.preferences);
-  } catch (error) {
-    console.error('Error fetching preferences:', error);
-    res.status(500).send('Error fetching preferences');
-  }
-});
-
-// Route to provide the API key to the frontend
-app.get('/api/get-api-key', (req, res) => {
-    res.json({ apiKey: process.env.OPENWEATHERMAP_API_KEY });
-});
-
-// Start server
+// Start Server
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

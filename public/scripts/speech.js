@@ -1,29 +1,24 @@
-// Declare recognition only once globally
-if (typeof window.recognition === 'undefined') {
-    window.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    
-    // Enable continuous listening and auto restart
-    window.recognition.continuous = false;
-    window.recognition.interimResults = false;
-    
-    window.recognition.onresult = (event) => {
-        const command = event.results[0][0].transcript.toLowerCase();
-        console.log("Voice Command:", command);
+document.addEventListener('DOMContentLoaded', () => {
+    const speakButton = document.getElementById('speak-btn');
 
-        if (command.includes('weather')) {
-            fetchWeather('current location'); // Replace with actual location fetching logic
-        }
+    if (!speakButton || !('speechSynthesis' in window)) {
+        console.warn('Speech synthesis not supported or speak button not found.');
+        return;
+    }
+
+    const speakWeather = () => {
+        const weatherDescription = document.getElementById('weather-description').textContent;
+        const temperature = document.getElementById('weather-temperature').textContent;
+        const cityName = document.getElementById('city-name').textContent;
+
+        const message = `Currently in ${cityName}, the weather is ${weatherDescription} with a temperature of ${temperature}.`;
+
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.rate = 1;
+        utterance.pitch = 1;
+
+        window.speechSynthesis.speak(utterance);
     };
 
-    window.recognition.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-    };
-}
-
-// Voice Command Button
-const voiceCommandButton = document.getElementById('voice-command');
-if (voiceCommandButton) {
-    voiceCommandButton.addEventListener('click', () => {
-        window.recognition.start();
-    });
-}
+    speakButton.addEventListener('click', speakWeather);
+});

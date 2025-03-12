@@ -1,45 +1,33 @@
-// Function to format time in 12-hour format
-function formatTime(date) {
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    const strMinutes = minutes < 10 ? '0' + minutes : minutes;
-    return `${hours}:${strMinutes} ${ampm}`;
-}
+// Utility functions for common tasks
 
-// Function to update the current date and time
-function updateDateTime() {
-    const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-    const dateTimeElement = document.getElementById('date-time');
-    if (dateTimeElement) {
-        dateTimeElement.innerText = now.toLocaleString('en-US', options);
-    }
-}
+// Format temperature from Kelvin to Celsius
+export const kelvinToCelsius = (kelvin) => {
+    return Math.round(kelvin - 273.15);
+};
 
-// Function to fetch JSON data from a URL
-async function fetchJSON(url) {
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+// Format timestamps into readable time
+export const formatTime = (timestamp) => {
+    return new Date(timestamp * 1000).toLocaleTimeString();
+};
+
+// Capitalize first letter of a string
+export const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+// Check if a response from fetch is ok
+export const checkResponse = (response) => {
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     return response.json();
-}
+};
 
-// Function to handle form submission
-function handleFormSubmit(form, callback) {
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        try {
-            await callback(data);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-}
-
-export { formatTime, updateDateTime, fetchJSON, handleFormSubmit };
+// Simplified fetch wrapper with error handling
+export const fetchJSON = async (url, options = {}) => {
+    try {
+        const response = await fetch(url, options);
+        return checkResponse(response);
+    } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+    }
+};

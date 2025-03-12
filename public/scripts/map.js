@@ -1,39 +1,40 @@
-// Initialize the map
-function initMap() {
-    const map = L.map('map').setView([51.505, -0.09], 13);
+document.addEventListener('DOMContentLoaded', () => {
+    const mapElement = document.getElementById('map');
 
+    if (!mapElement) return;
+
+    // Initialize map
+    const map = L.map('map').setView([20.5937, 78.9629], 5); // Example coordinates (India)
+
+    // Load and display tile layers from OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Fetch weather data for the map
-    fetchWeatherDataForMap(map);
-}
+    // Fetch and display weather data on the map
+    async function fetchWeatherAndUpdateMap(city) {
+        try {
+            const response = await fetch(`/api/weather/${city}`);
+            if (!response.ok) throw new Error('Failed to fetch weather data');
 
-// Fetch weather data for the map
-const fetchWeatherDataForMap = async (map) => {
-    try {
-        const response = await fetch('/api/weather-data');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+            const { coord, weather, main, name } = data;
+
+            // Add marker with weather information
+            const marker = L.marker([coord.lat, coord.lon]).addTo(map);
+            marker.bindPopup(`
+                <b>${name}</b><br>
+                Weather: ${weather[0].description}<br>
+                Temp: ${Math.round(main.temp - 273.15)}°C
+            `).openPopup();
+
+            // Center map on the marker
+            map.setView([coord.lat, coord.lon], 10);
+        } catch (error) {
+            console.error('Map Weather Fetch Error:', error);
         }
-        const data = await response.json();
-        updateWeatherLayer(map, data);
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
     }
-};
 
-// Define the updateWeatherLayer function
-function updateWeatherLayer(map, data) {
-    // Update map with weather data
-    console.log('Weather layer updated with:', data);
-
-    // Example logic to update the map with weather data
-    data.forEach(weather => {
-        const marker = L.marker([weather.coord.lat, weather.coord.lon]).addTo(map);
-        marker.bindPopup(`<b>${weather.name}</b><br>Temperature: ${weather.main.temp}°C<br>Weather: ${weather.weather[0].description}`).openPopup();
-    });
-}
-
-document.addEventListener('DOMContentLoaded', initMap);
+    // Example city, replace with dynamic input if needed
+    fetchWeatherAndUpdateMap('Delhi');
+});
