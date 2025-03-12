@@ -97,14 +97,17 @@
         <p>Contact: shreejithisdumb@gmail.com | Phone: 7904106363</p>
     </footer>
 
-    <script src="/scripts/utils.js"></script>
-    <script src="/scripts/speech.js"></script>
-    <script src="/scripts/three.js"></script>
-    <script src="/scripts/weather.js"></script>
-    <script src="/scripts/authentication.js"></script>
-    <script src="/scripts/map.js"></script>
-    <script src="/js/chatbot.js"></script>
-    <script>
+    <!-- Include your JavaScript files as ES6 modules -->
+    <script type="module" src="scripts/utils.js"></script>
+    <script type="module" src="scripts/speech.js"></script>
+    <script type="module" src="scripts/three.js"></script>
+    <script type="module" src="scripts/weather.js"></script>
+    <script type="module" src="scripts/authentication.js"></script>
+    <script type="module" src="scripts/map.js"></script>
+    <script type="module" src="js/chatbot.js"></script>
+    <script type="module">
+        import { fetchWeather } from './scripts/weather.js';
+
         // Example of how to use the suggested code change
         const weatherIcon = document.getElementById('weather-icon');
         const weather = { icon: '01d' }; // Example weather data

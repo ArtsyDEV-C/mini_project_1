@@ -68,7 +68,7 @@ const weatherMusic = {
 const API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
 
 // Function to fetch weather data
-async function fetchWeather(city) {
+export async function fetchWeather(city) {
     try {
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`);
         if (!response.ok) {
@@ -151,12 +151,23 @@ function updateWeatherUI(data) {
         istTimeElement.innerText = istTime.toLocaleTimeString();
     }
 
+    // Determine the time of day
+    const currentTime = new Date().getHours();
+    let timeOfDay = 'day';
+    if (currentTime >= 18 || currentTime < 6) {
+        timeOfDay = 'night';
+    } else if (currentTime >= 16 && currentTime < 18) {
+        timeOfDay = 'evening';
+    } else if (currentTime >= 6 && currentTime < 16) {
+        timeOfDay = 'morning';
+    }
+
     // Update background image
-    const weatherBackground = weatherBackgrounds[weather.icon] || "images/default.jpg";
+    const weatherBackground = weatherBackgrounds[`${weather.icon}-${timeOfDay}`] || "images/default.jpg";
     document.body.style.backgroundImage = `url(${weatherBackground})`;
 
     // Update cat animation
-    const weatherVideo = weatherVideos[weather.icon] || "videos/default.mp4";
+    const weatherVideo = weatherVideos[`${weather.icon}-${timeOfDay}`] || "videos/default.mp4";
     const aiCatVideo = document.getElementById('ai-cat-video');
     if (aiCatVideo) {
         aiCatVideo.innerHTML = `<video src="${weatherVideo}" autoplay loop muted></video>`;
