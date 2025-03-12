@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neko Global Weather</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Nunito:wght@400;600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
     <link rel="icon" href="logo.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Header Section -->
@@ -37,7 +35,7 @@
         <div class="search-bar">
             <input type="text" id="search-input" placeholder="Enter city..." autocomplete="off">
             <button id="search-button">Search</button>
-            <video src="videos/search.mp4" autoplay loop muted id="search-video"></video>
+            <video src="/videos/search.mp4" autoplay loop muted id="search-video"></video>
         </div>
     </section>
 
@@ -78,7 +76,7 @@
     <section class="ai-cat-insights">
         <h2>AI Cat Insights</h2>
         <div id="ai-cat-video">
-            <video src="videos/default.mp4" autoplay loop muted></video>
+            <video src="/videos/default.mp4" autoplay loop muted></video>
         </div>
         <img src="/images/default.jpg" onerror="this.src='/images/placeholder.jpg';" alt="Default Image">
     </section>
@@ -92,44 +90,38 @@
 
     <!-- Footer -->
     <footer>
-        <video src="videos/contact.mp4" autoplay loop muted id="contact-video"></video>
+        <video src="/videos/contact.mp4" autoplay loop muted id="contact-video"></video>
         <p>Powered by OpenWeatherMap</p>
-        <p>Contact: shreejithisdumb@gmail.com | Phone: 7904106363</p>
+        <p>Contact: support@nekoglobal.com | Phone: 7904106363</p>
     </footer>
 
-    <!-- Include your JavaScript files as ES6 modules -->
+    <!-- JavaScript Files -->
     <script type="module" src="scripts/utils.js"></script>
     <script type="module" src="scripts/speech.js"></script>
-    <script type="module" src="scripts/three.js"></script>
     <script type="module" src="scripts/weather.js"></script>
     <script type="module" src="scripts/authentication.js"></script>
     <script type="module" src="scripts/map.js"></script>
     <script type="module" src="js/chatbot.js"></script>
+    
     <script type="module">
         import { fetchWeather } from './scripts/weather.js';
 
-        // Example of how to use the suggested code change
+        // Update weather icon
         const weatherIcon = document.getElementById('weather-icon');
         const weather = { icon: '01d' }; // Example weather data
         weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
 
         // Chat bubble toggle
-        const chatBubble = document.getElementById('chat-bubble');
         const chatContainer = document.getElementById('chat-container');
-        if (chatBubble && chatContainer) {
-            chatBubble.addEventListener('click', () => {
-                chatContainer.classList.toggle('active');
-            });
-        }
+        document.getElementById('chatbox')?.addEventListener('click', () => {
+            chatContainer.classList.toggle('active');
+        });
 
         // Search button functionality
-        const searchButton = document.getElementById('search-button');
-        if (searchButton) {
-            searchButton.addEventListener('click', () => {
-                const city = document.getElementById('search-input').value;
-                fetchWeather(city);
-            });
-        }
+        document.getElementById('search-button')?.addEventListener('click', () => {
+            const city = document.getElementById('search-input').value;
+            fetchWeather(city);
+        });
     </script>
 </body>
 </html>

@@ -24,6 +24,7 @@ const weatherBackgrounds = {
     "windy-morning": "images/windy-sky-day.jpg",
     "windy-night": "images/windy-sky-night.jpg",
     "windy-evening": "images/windy-sky-evening.jpg",
+    "default": "images/default.jpg"
 };
 
 const weatherVideos = {
@@ -62,7 +63,8 @@ const weatherMusic = {
     "thunderstorm": "music/thunderstorm.mp3",
     "hazy": "music/hazy.mp3",
     "foggy": "music/foggy.mp3",
-    "windy": "music/windy.mp3"
+    "windy": "music/windy.mp3",
+    "default": "music/default.mp3"
 };
 
 let API_KEY = '';
@@ -78,7 +80,7 @@ async function fetchApiKey() {
     }
 }
 
-// Function to fetch weather data
+// Fetch weather data
 export async function fetchWeather(city) {
     try {
         if (!API_KEY) {
@@ -86,7 +88,7 @@ export async function fetchWeather(city) {
         }
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         updateWeatherUI(data);
@@ -95,108 +97,38 @@ export async function fetchWeather(city) {
     }
 }
 
-// Function to update weather data on the page
+// Function to update the UI
 function updateWeatherUI(data) {
     const weather = data.weather[0];
     const main = data.main;
-    const wind = data.wind;
     const sys = data.sys;
 
-    // City name
-    const cityElement = document.getElementById('city-name');
-    if (cityElement) {
-        cityElement.innerText = `${data.name}, ${data.sys.country}`;
-    }
+    document.getElementById('city-name').innerText = `${data.name}, ${sys.country}`;
+    document.getElementById('weather-icon').innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
+    document.getElementById('weather-temperature').innerText = `${Math.round(main.temp - 273.15)}°C`;
+    document.getElementById('weather-description').innerText = weather.description;
+    document.getElementById('humidity').innerText = `${main.humidity}%`;
+    document.getElementById('pressure').innerText = `${main.pressure} hPa`;
+    document.getElementById('sunrise').innerText = new Date(sys.sunrise * 1000).toLocaleTimeString();
+    document.getElementById('sunset').innerText = new Date(sys.sunset * 1000).toLocaleTimeString();
 
-    // Weather icon
-    const weatherIcon = document.getElementById('weather-icon');
-    if (weatherIcon) {
-        weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
-    }
-
-    // Temperature
-    const temperatureElement = document.getElementById('weather-temperature');
-    if (temperatureElement) {
-        temperatureElement.innerText = `${Math.round(main.temp - 273.15)}°C`;
-    }
-
-    // Weather description
-    const weatherDescription = document.getElementById('weather-description');
-    if (weatherDescription) {
-        weatherDescription.innerText = weather.description;
-    }
-
-    // Other weather stats
-    const humidityElement = document.getElementById('humidity');
-    if (humidityElement) {
-        humidityElement.innerText = `${main.humidity}%`;
-    }
-
-    const uvIndexElement = document.getElementById('uv-index');
-    if (uvIndexElement) {
-        uvIndexElement.innerText = 'N/A'; // UV index is not available in this API call
-    }
-
-    const pressureElement = document.getElementById('pressure');
-    if (pressureElement) {
-        pressureElement.innerText = `${main.pressure} hPa`;
-    }
-
-    const sunriseElement = document.getElementById('sunrise');
-    if (sunriseElement) {
-        sunriseElement.innerText = new Date(sys.sunrise * 1000).toLocaleTimeString();
-    }
-
-    const sunsetElement = document.getElementById('sunset');
-    if (sunsetElement) {
-        sunsetElement.innerText = new Date(sys.sunset * 1000).toLocaleTimeString();
-    }
-
-    const localTimeElement = document.getElementById('local-time');
-    if (localTimeElement) {
-        localTimeElement.innerText = new Date().toLocaleTimeString();
-    }
-
-    const istTimeElement = document.getElementById('ist-time');
-    if (istTimeElement) {
-        const now = new Date();
-        const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
-        const istTime = new Date(now.getTime() + istOffset);
-        istTimeElement.innerText = istTime.toLocaleTimeString();
-    }
-
-    // Determine the time of day
     const currentTime = new Date().getHours();
-    let timeOfDay = 'day';
-    if (currentTime >= 18 || currentTime < 6) {
-        timeOfDay = 'night';
-    } else if (currentTime >= 16 && currentTime < 18) {
-        timeOfDay = 'evening';
-    } else if (currentTime >= 6 && currentTime < 16) {
-        timeOfDay = 'morning';
-    }
+    let timeOfDay = "day";
+    if (currentTime >= 18 || currentTime < 6) timeOfDay = "night";
+    else if (currentTime >= 16 && currentTime < 18) timeOfDay = "evening";
 
-    // Update background image
-    const weatherBackground = weatherBackgrounds[`${weather.icon}-${timeOfDay}`] || "images/default.jpg";
+    const weatherBackground = weatherBackgrounds[`${weather.main.toLowerCase()}-${timeOfDay}`] || weatherBackgrounds["default"];
     document.body.style.backgroundImage = `url(${weatherBackground})`;
 
-    // Update cat animation
-    const weatherVideo = weatherVideos[`${weather.icon}-${timeOfDay}`] || "videos/default.mp4";
-    const aiCatVideo = document.getElementById('ai-cat-video');
-    if (aiCatVideo) {
-        aiCatVideo.innerHTML = `<video src="${weatherVideo}" autoplay loop muted></video>`;
-    }
+    const weatherVideo = weatherVideos[`${weather.main.toLowerCase()}-${timeOfDay}`] || weatherVideos["default"];
+    document.getElementById('ai-cat-video').innerHTML = `<video src="${weatherVideo}" autoplay loop muted></video>`;
 
-    // Update weather-related music
-    const weatherMusicFile = weatherMusic[weather.icon] || "music/default.mp3";
+    const weatherMusicFile = weatherMusic[weather.main.toLowerCase()] || weatherMusic["default"];
     const audioElement = document.getElementById('weather-music');
-    if (audioElement) {
-        audioElement.src = weatherMusicFile;
-        audioElement.play();
-    }
+    audioElement.src = weatherMusicFile;
+    audioElement.play();
 }
 
-// Example usage
 document.addEventListener('DOMContentLoaded', () => {
     fetchWeather('New York');
 });
@@ -207,10 +139,9 @@ navigator.geolocation.getCurrentPosition(async (position) => {
             await fetchApiKey();
         }
         const { latitude, longitude } = position.coords;
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
-        const response = await fetch(url);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         updateWeatherUI(data);
@@ -218,50 +149,3 @@ navigator.geolocation.getCurrentPosition(async (position) => {
         console.error('Error fetching weather data:', error);
     }
 });
-
-// Function to provide recommendations based on weather
-const provideRecommendations = (weather) => {
-    const recommendations = [];
-    if (weather.main.temp < 15) {
-        recommendations.push('Wear warm clothes');
-    } else if (weather.main.temp > 30) {
-        recommendations.push('Wear light clothes');
-    }
-    if (weather.weather[0].main === 'Rain') {
-        recommendations.push('Carry an umbrella');
-    }
-    // Display recommendations
-    document.getElementById('recommendations').innerHTML = recommendations.join(', ');
-};
-
-// Function to display disaster warnings
-const displayDisasterWarnings = (warnings) => {
-    const warningContainer = document.getElementById('disaster-warnings');
-    warningContainer.innerHTML = warnings.map(warning => `<div>${warning}</div>`).join('');
-};
-
-// Define the updateWeatherLayer function
-function updateWeatherLayer(data) {
-    // Update map with weather data
-    console.log('Weather layer updated with:', data);
-}
-
-// Example function to fetch weather data and update map
-const fetchWeatherDataForMap = async () => {
-    try {
-        if (!API_KEY) {
-            await fetchApiKey();
-        }
-        const response = await fetch('/api/weather-data');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        updateWeatherLayer(data);
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
-    }
-};
-
-// Call the function to fetch weather data and update map
-fetchWeatherDataForMap();
