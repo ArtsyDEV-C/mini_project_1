@@ -166,6 +166,7 @@ app.get('/api/weather-data', async (req, res) => {
     const weatherData = await getWeatherData(city);
     res.json(weatherData);
   } catch (error) {
+    console.error('Error fetching weather data:', error);
     res.status(500).json({ error: 'Error fetching weather data' });
   }
 });

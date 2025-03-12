@@ -69,12 +69,16 @@ const API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
 
 // Function to fetch weather data
 async function fetchWeather(city) {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`);
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        updateWeatherUI(data);
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
     }
-    const data = await response.json();
-    updateWeatherUI(data);
 }
 
 // Function to update weather data on the page
@@ -173,11 +177,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 navigator.geolocation.getCurrentPosition(async (position) => {
-    const { latitude, longitude } = position.coords;
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    updateWeatherUI(data);
+    try {
+        const { latitude, longitude } = position.coords;
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        updateWeatherUI(data);
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+    }
 });
 
 // Function to provide recommendations based on weather
