@@ -1,3 +1,5 @@
+import { updateWeatherLayer } from './file-path';
+
 const weatherBackgrounds = {
     "clear-day": "images/clear-sky-day.jpg",
     "clear-night": "images/clear-sky-night.jpg",
@@ -182,11 +184,24 @@ const displayDisasterWarnings = (warnings) => {
     warningContainer.innerHTML = warnings.map(warning => `<div>${warning}</div>`).join('');
 };
 
+// Define the updateWeatherLayer function
+function updateWeatherLayer(data) {
+    // Update map with weather data
+    console.log('Weather layer updated with:', data);
+}
+
+// Export the function if needed
+export { updateWeatherLayer };
+
 // Example function to fetch weather data and update map
 const fetchWeatherDataForMap = async () => {
     const response = await fetch('/api/weather-data');
     const data = await response.json();
-    updateWeatherLayer(data);
+    try {
+        updateWeatherLayer(data);
+    } catch (error) {
+        console.error('Error calling updateWeatherLayer:', error);
+    }
 };
 
 // Call the function to fetch weather data and update map
