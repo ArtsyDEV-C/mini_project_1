@@ -13,23 +13,26 @@
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-    <nav class="navbar">
+    <nav class="navbar container">
         <div class="logo">
             <video src="/videos/logo.mp4" autoplay loop muted id="logo-video"></video>
             <h1 class="website-title">Neko Global Weather</h1>
         </div>
         <ul class="nav-links">
             <li><a href="#">Home</a></li>
-            <li><a href="#">Forecast</a></li>
-            <li><a href="#">Radar</a></li>
-            <li><a href="#">AI Cat Insights</a></li>
+            <li><a href="#forecast-section">Forecast</a></li>
+            <li><a href="#map-section">Radar</a></li>
+            <li><a href="#ai-cat-insights">AI Cat Insights</a></li>
+            <li><a href="#chatbot-section">Chatbot</a></li>
             <li><a href="#">Settings</a></li>
         </ul>
     </nav>
 </header>
 
-<section class="search-section">
+<!-- SEARCH SECTION -->
+<section class="search-section container">
     <div class="search-bar">
         <input type="text" id="search-input" placeholder="Enter city...">
         <button id="search-button">Search</button>
@@ -37,7 +40,8 @@
     </div>
 </section>
 
-<section class="weather-display">
+<!-- CURRENT WEATHER DISPLAY -->
+<section class="weather-display container">
     <div class="weather-card">
         <div id="city-name"></div>
         <div id="date-time"></div>
@@ -55,30 +59,48 @@
     </div>
 </section>
 
-<section class="radar-section">
+<!-- 10 DAY WEATHER FORECAST -->
+<section id="forecast-section" class="forecast-section container">
+    <h2>10-Day Weather Forecast</h2>
+    <div class="forecast-cards" id="forecast-container">
+        <!-- Dynamic Forecast Cards Generated via JS -->
+    </div>
+</section>
+
+<!-- INTERACTIVE MAP -->
+<section id="map-section" class="map-section container">
     <h2>Interactive Radar Map</h2>
     <div id="map" style="height: 500px; border-radius: 10px;"></div>
 </section>
 
-<section class="ai-cat-insights">
+<!-- AI CAT INSIGHTS (Dynamic Videos & Images) -->
+<section id="ai-cat-insights" class="ai-cat-insights container">
     <h2>AI Cat Insights</h2>
-    <video src="/videos/default.mp4" autoplay loop muted></video>
-    <img src="/images/default.jpg" alt="AI Cat Insights">
+    <video id="cat-video" src="/videos/default.mp4" autoplay loop muted></video>
+    <img id="cat-image" src="/images/default.jpg" alt="AI Cat Insights">
 </section>
 
-<div id="chat-container">
-    <div id="chatbox" class="chatbox"></div>
-</div>
+<!-- CHATBOT SECTION -->
+<section id="chatbot-section" class="chatbot-section container">
+    <h2>Weather Chatbot</h2>
+    <div id="chat-container">
+        <div id="chatbox"></div>
+        <input type="text" id="chat-input" placeholder="Ask me about weather...">
+        <button id="send-btn">Send</button>
+    </div>
+</section>
 
-<footer>
-    <video src="/videos/contact.mp4" autoplay loop muted></video>
+<!-- FOOTER -->
+<footer class="container">
+    <video src="/videos/contact.mp4" autoplay loop muted class="footer-video"></video>
     <p>Powered by OpenWeatherMap</p>
     <p>Contact: support@nekoglobal.com | Phone: 7904106363</p>
 </footer>
 
-<!-- Add the speak button for speech synthesis -->
+<!-- SPEECH BUTTON -->
 <button id="speak-btn">Speak Weather</button>
 
+<!-- SCRIPTS -->
 <script type="module" src="scripts/utils.js"></script>
 <script type="module" src="scripts/weather.js"></script>
 <script type="module" src="scripts/map.js"></script>
@@ -95,8 +117,30 @@
     });
 
     window.onload = () => {
-        fetchWeather('Delhi'); // default city
+        fetchWeather('Delhi');
+        initializeMap();
+        initializeChatbot();
     };
+
+    // Example dynamic cat video/image loader based on weather condition
+    function updateCatMedia(weatherCondition, currentHour) {
+        const video = document.getElementById('cat-video');
+        const image = document.getElementById('cat-image');
+
+        if (weatherCondition.includes('rain')) {
+            video.src = '/videos/rainy-cat.mp4';
+            image.src = '/images/rainy-cat.jpg';
+        } else if (weatherCondition.includes('cloud')) {
+            video.src = '/videos/cloudy-cat.mp4';
+            image.src = '/images/cloudy-cat.jpg';
+        } else if (weatherCondition.includes('clear') && currentHour >= 6 && currentHour < 18) {
+            video.src = '/videos/sunny-cat.mp4';
+            image.src = '/images/sunny-cat.jpg';
+        } else {
+            video.src = '/videos/night-cat.mp4';
+            image.src = '/images/night-cat.jpg';
+        }
+    }
 </script>
 
 </body>

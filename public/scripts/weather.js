@@ -90,6 +90,37 @@ const updateWeatherUI = (data) => {
     const audioSrc = weatherMusic[weather.main.toLowerCase()] || weatherMusic["default"];
     const audio = new Audio(audioSrc);
     audio.play();
+
+    // Call updateCatMedia function
+    updateCatMedia(weather.main.toLowerCase(), currentHour);
+};
+
+const updateCatMedia = (weatherCondition, currentHour) => {
+    const video = document.getElementById('cat-video');
+    const image = document.getElementById('cat-image');
+
+    const timeOfDay = currentHour >= 6 && currentHour < 18 
+                      ? 'day'
+                      : currentHour >= 18 && currentHour < 21 
+                        ? 'evening'
+                        : 'night';
+
+    let condition = 'default';
+
+    if(weatherCondition.includes('clear')) condition = 'clear-sky';
+    else if(weatherCondition.includes('cloud')) condition = 'cloudy-sky';
+    else if(weatherCondition.includes('rain')) condition = 'rainy-sky';
+    else if(weatherCondition.includes('snow')) condition = 'snowy-sky';
+    else if(weatherCondition.includes('thunderstorm')) condition = 'thunderstorm-sky';
+    else if(weatherCondition.includes('fog')) condition = 'foggy-sky';
+    else if(weatherCondition.includes('haze')) condition = 'hazy-sky';
+    else if(weatherCondition.includes('wind')) condition = 'windy-sky';
+
+    // Setting paths based on your provided image naming convention
+    image.src = `/images/${condition}-${timeOfDay}.jpg`;
+
+    // Optionally you can set videos if you have similar named videos
+    video.src = `/videos/${condition}-${timeOfDay}.mp4`;
 };
 
 export const fetchWeather = async (city) => {
