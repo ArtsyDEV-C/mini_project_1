@@ -65,167 +65,93 @@ const weatherMusic = {
     "windy": "music/windy.mp3"
 };
 
-const API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
+const API_KEY = 'YOUR_API_KEY_HERE'; // Replace with your actual API key
 
+// Function to fetch weather data
+async function fetchWeather(city) {
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    updateWeatherUI(data);
+}
+
+// Function to update weather data on the page
 function updateWeatherUI(data) {
     const weather = data.weather[0];
     const main = data.main;
     const wind = data.wind;
     const sys = data.sys;
 
-    const cityElement = document.querySelector('#city-name');
-    const temperatureElement = document.querySelector('#weather-temperature');
-    const weatherDescription = document.querySelector('#weather-description');
-    const weatherIcon = document.querySelector('#weather-icon');
-    const windSpeedElement = document.querySelector('#wind-speed');
-    const humidityElement = document.querySelector('#humidity');
-    const uvIndexElement = document.querySelector('#uv-index');
-    const pressureElement = document.querySelector('#pressure');
-    const sunriseElement = document.querySelector('#sunrise');
-    const sunsetElement = document.querySelector('#sunset');
-    const forecastContainer = document.querySelector('#forecast');
-    const weatherVideo = document.querySelector('#weather-video');
-    const weatherMusicElement = document.querySelector('#weather-music');
-    const dateTimeElement = document.querySelector('#date-time');
-    const localTimeElement = document.querySelector('#local-time');
-    const istTimeElement = document.querySelector('#ist-time');
-
     // City name
-    cityElement.innerText = `${data.name}, ${data.sys.country}`;
-
-    // Determine if it's day, night, or evening
-    const now = new Date();
-    const sunrise = new Date(sys.sunrise * 1000);
-    const sunset = new Date(sys.sunset * 1000);
-    const eveningStart = new Date(sunset.getTime() - 3600 * 1000); // 1 hour before sunset
-    const morningEnd = new Date(sunrise.getTime() + 3600 * 1000); // 1 hour after sunrise
-    const isDayTime = now >= morningEnd && now < sunset;
-    const isEveningTime = now >= eveningStart && now < sunset;
-    const isMorningTime = now >= sunrise && now < morningEnd;
-
-    // Set weather background
-    const weatherCondition = weather.main.toLowerCase();
-    let backgroundImage = isDayTime ? weatherBackgrounds["clear-day"] : weatherBackgrounds["clear-night"]; // Default
-    if (isEveningTime) {
-        backgroundImage = weatherBackgrounds["clear-evening"];
-    } else if (isMorningTime) {
-        backgroundImage = weatherBackgrounds["clear-day"];
-    }
-    if (weatherCondition.includes('cloud')) backgroundImage = isDayTime ? weatherBackgrounds["cloudy-day"] : (isEveningTime ? weatherBackgrounds["cloudy-evening"] : (isMorningTime ? weatherBackgrounds["cloudy-morning"] : weatherBackgrounds["cloudy-night"]));
-    if (weatherCondition.includes('rain')) backgroundImage = isDayTime ? weatherBackgrounds["rainy-day"] : (isEveningTime ? weatherBackgrounds["rainy-evening"] : (isMorningTime ? weatherBackgrounds["rainy-morning"] : weatherBackgrounds["rainy-night"]));
-    if (weatherCondition.includes('clear')) backgroundImage = isDayTime ? weatherBackgrounds["clear-day"] : (isEveningTime ? weatherBackgrounds["clear-evening"] : (isMorningTime ? weatherBackgrounds["clear-morning"] : weatherBackgrounds["clear-night"]));
-    if (weatherCondition.includes('snow')) backgroundImage = isDayTime ? weatherBackgrounds["snowy-day"] : (isEveningTime ? weatherBackgrounds["snowy-evening"] : (isMorningTime ? weatherBackgrounds["snowy-morning"] : weatherBackgrounds["snowy-night"]));
-    if (weatherCondition.includes('thunderstorm')) backgroundImage = isDayTime ? weatherBackgrounds["thunderstorm-day"] : (isEveningTime ? weatherBackgrounds["thunderstorm-evening"] : (isMorningTime ? weatherBackgrounds["thunderstorm-morning"] : weatherBackgrounds["thunderstorm-night"]));
-    if (weatherCondition.includes('haze')) backgroundImage = isDayTime ? weatherBackgrounds["hazy-day"] : (isEveningTime ? weatherBackgrounds["hazy-night"] : (isMorningTime ? weatherBackgrounds["hazy-morning"] : weatherBackgrounds["hazy-night"]));
-    if (weatherCondition.includes('fog')) backgroundImage = isDayTime ? weatherBackgrounds["foggy-day"] : (isEveningTime ? weatherBackgrounds["foggy-night"] : (isMorningTime ? weatherBackgrounds["foggy-morning"] : weatherBackgrounds["foggy-night"]));
-    if (weatherCondition.includes('wind')) backgroundImage = isDayTime ? weatherBackgrounds["windy-day"] : (isEveningTime ? weatherBackgrounds["windy-night"] : (isMorningTime ? weatherBackgrounds["windy-morning"] : weatherBackgrounds["windy-night"]));
-
-    document.body.style.backgroundImage = `url(${backgroundImage})`;
-
-    // Set video and music based on weather
-    let video = weatherVideos["default"];
-    if (isDayTime) {
-        video = weatherVideos["clear-morning"];
-    } else if (isEveningTime) {
-        video = weatherVideos["clear-evening"];
-    } else if (isMorningTime) {
-        video = weatherVideos["clear-morning"];
-    } else {
-        video = weatherVideos["clear-night"];
+    const cityElement = document.getElementById('city-name');
+    if (cityElement) {
+        cityElement.innerText = `${data.name}, ${data.sys.country}`;
     }
 
-    let music = weatherMusic["clear"];
-    if (weatherCondition.includes('rain')) {
-        video = isDayTime ? weatherVideos["rain-morning"] : (isEveningTime ? weatherVideos["rain-evening"] : (isMorningTime ? weatherVideos["rain-morning"] : weatherVideos["rain-night"]));
-        music = weatherMusic["rainy"];
-    } else if (weatherCondition.includes('cloud')) {
-        video = isDayTime ? weatherVideos["cloudy-morning"] : (isEveningTime ? weatherVideos["cloudy-evening"] : (isMorningTime ? weatherVideos["cloudy-morning"] : weatherVideos["cloudy-night"]));
-        music = weatherMusic["cloudy"];
-    } else if (weatherCondition.includes('snow')) {
-        video = isDayTime ? weatherVideos["snowy-morning"] : (isEveningTime ? weatherVideos["snowy-evening"] : (isMorningTime ? weatherVideos["snowy-morning"] : weatherVideos["snowy-night"]));
-        music = weatherMusic["snowy"];
-    } else if (weatherCondition.includes('thunderstorm')) {
-        video = isDayTime ? weatherVideos["thunderstorm-morning"] : (isEveningTime ? weatherVideos["thunderstorm-evening"] : (isMorningTime ? weatherVideos["thunderstorm-morning"] : weatherVideos["thunderstorm-night"]));
-        music = weatherMusic["thunderstorm"];
-    } else if (weatherCondition.includes('haze')) {
-        video = isDayTime ? weatherVideos["foggy-morning"] : (isEveningTime ? weatherVideos["foggy-evening"] : (isMorningTime ? weatherVideos["foggy-morning"] : weatherVideos["foggy-night"]));
-        music = weatherMusic["hazy"];
-    } else if (weatherCondition.includes('fog')) {
-        video = isDayTime ? weatherVideos["foggy-morning"] : (isEveningTime ? weatherVideos["foggy-evening"] : (isMorningTime ? weatherVideos["foggy-morning"] : weatherVideos["foggy-night"]));
-        music = weatherMusic["foggy"];
-    } else if (weatherCondition.includes('wind')) {
-        video = isDayTime ? weatherVideos["windy-morning"] : (isEveningTime ? weatherVideos["windy-evening"] : (isMorningTime ? weatherVideos["windy-morning"] : weatherVideos["windy-night"]));
-        music = weatherMusic["windy"];
+    // Weather icon
+    const weatherIcon = document.getElementById('weather-icon');
+    if (weatherIcon) {
+        weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
     }
 
-    // Set video
-    weatherVideo.src = video;
+    // Temperature
+    const temperatureElement = document.getElementById('weather-temperature');
+    if (temperatureElement) {
+        temperatureElement.innerText = `${Math.round(main.temp - 273.15)}°C`;
+    }
 
-    // Set music (play automatically)
-    weatherMusicElement.src = music;
-    weatherMusicElement.play();
+    // Weather description
+    const weatherDescription = document.getElementById('weather-description');
+    if (weatherDescription) {
+        weatherDescription.innerText = weather.description;
+    }
 
-    // Set temperature in Celsius and Fahrenheit
-    const tempCelsius = Math.round(main.temp - 273.15);
-    const tempFahrenheit = Math.round((tempCelsius * 9 / 5) + 32);
-    temperatureElement.innerHTML = `${tempCelsius}°C / ${tempFahrenheit}°F`;
+    // Other weather stats
+    const humidityElement = document.getElementById('humidity');
+    if (humidityElement) {
+        humidityElement.innerText = `${main.humidity}%`;
+    }
 
-    // Set weather description and icon
-    weatherDescription.innerHTML = weather.description;
-    weatherIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.icon}.png" alt="Weather Icon">`;
+    const uvIndexElement = document.getElementById('uv-index');
+    if (uvIndexElement) {
+        uvIndexElement.innerText = 'N/A'; // UV index is not available in this API call
+    }
 
-    // Set other weather data
-    windSpeedElement.innerText = `${wind.speed} m/s`;
-    humidityElement.innerText = `${main.humidity}%`;
-    uvIndexElement.innerText = 'N/A'; // UV Index requires a separate API call
-    pressureElement.innerText = `${main.pressure} hPa`;
-    sunriseElement.innerText = formatTime(sunrise);
-    sunsetElement.innerText = formatTime(sunset);
+    const pressureElement = document.getElementById('pressure');
+    if (pressureElement) {
+        pressureElement.innerText = `${main.pressure} hPa`;
+    }
 
-    // Set local time and IST time
-    const localTime = new Date(now.getTime() + data.timezone * 1000);
-    localTimeElement.innerText = formatTime(localTime);
-    const istTime = new Date(now.getTime() + (5.5 * 3600 * 1000));
-    istTimeElement.innerText = formatTime(istTime);
+    const sunriseElement = document.getElementById('sunrise');
+    if (sunriseElement) {
+        sunriseElement.innerText = new Date(sys.sunrise * 1000).toLocaleTimeString();
+    }
 
-    // Display weather forecast (dummy data here, you should replace with actual forecast data)
-    forecastContainer.innerHTML = `
-        <div><strong>Day 1:</strong> Sunny - 25°C</div>
-        <div><strong>Day 2:</strong> Cloudy - 23°C</div>
-        <div><strong>Day 3:</strong> Rainy - 18°C</div>
-        <div><strong>Day 4:</strong> Snowy - 10°C</div>
-        <div><strong>Day 5:</strong> Thunderstorm - 12°C</div>
-        <div><strong>Day 6:</strong> Sunny - 26°C</div>
-        <div><strong>Day 7:</strong> Cloudy - 22°C</div>
-        <div><strong>Day 8:</strong> Rainy - 19°C</div>
-        <div><strong>Day 9:</strong> Clear - 24°C</div>
-        <div><strong>Day 10:</strong> Snowy - 5°C</div>
-    `;
+    const sunsetElement = document.getElementById('sunset');
+    if (sunsetElement) {
+        sunsetElement.innerText = new Date(sys.sunset * 1000).toLocaleTimeString();
+    }
 
-    // Provide recommendations based on weather
-    provideRecommendations(weather);
-}
+    const localTimeElement = document.getElementById('local-time');
+    if (localTimeElement) {
+        localTimeElement.innerText = new Date().toLocaleTimeString();
+    }
 
-async function fetchWeather(city) {
-    const loadingSpinner = document.querySelector('#loading');
-    loadingSpinner.style.display = 'flex';
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.cod === '404') {
-            alert('City not found!');
-        } else {
-            updateWeatherUI(data);
-        }
-    } catch (error) {
-        alert('Error fetching weather data!');
-    } finally {
-        loadingSpinner.style.display = 'none';
+    const istTimeElement = document.getElementById('ist-time');
+    if (istTimeElement) {
+        const now = new Date();
+        const istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+        const istTime = new Date(now.getTime() + istOffset);
+        istTimeElement.innerText = istTime.toLocaleTimeString();
     }
 }
+
+// Example usage
+document.addEventListener('DOMContentLoaded', () => {
+    fetchWeather('New York');
+});
 
 navigator.geolocation.getCurrentPosition(async (position) => {
     const { latitude, longitude } = position.coords;

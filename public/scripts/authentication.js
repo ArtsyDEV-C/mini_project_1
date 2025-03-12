@@ -97,16 +97,4 @@ const savePreferences = async (preferences) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: 'USER_ID', preferences })
     });
-    if (response.ok) {
-        alert('Preferences saved');
-    } else {
-        alert('Error saving preferences');
-    }
-};
-
-// Function to fetch user preferences
-const fetchPreferences = async () => {
-    const response = await fetch('/api/preferences/USER_ID');
-    const preferences = await response.json();
-    // Update UI with preferences
 };

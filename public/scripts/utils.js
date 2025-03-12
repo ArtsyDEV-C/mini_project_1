@@ -1,4 +1,4 @@
-// Utility function to format time in 12-hour format
+// Function to format time in 12-hour format
 function formatTime(date) {
     let hours = date.getHours();
     const minutes = date.getMinutes();
@@ -9,49 +9,37 @@ function formatTime(date) {
     return `${hours}:${strMinutes} ${ampm}`;
 }
 
-// Utility function to update the current date and time
-function updateDateTime(element) {
+// Function to update the current date and time
+function updateDateTime() {
     const now = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-    element.innerText = now.toLocaleString('en-US', options);
-}
-
-// Utility function to fetch JSON data from a URL
-async function fetchJson(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
+    const dateTimeElement = document.getElementById('date-time');
+    if (dateTimeElement) {
+        dateTimeElement.innerText = now.toLocaleString('en-US', options);
     }
 }
 
-// Utility function to handle form submission
-async function handleFormSubmit(form, url) {
+// Function to fetch JSON data from a URL
+async function fetchJSON(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+}
+
+// Function to handle form submission
+function handleFormSubmit(form, callback) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-
         try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            alert('Operation was successful');
+            await callback(data);
         } catch (error) {
-            alert('There was a problem with your submission');
-            console.error('There has been a problem with your fetch operation:', error);
+            console.error('Error:', error);
         }
     });
 }
 
-export { formatTime, updateDateTime, fetchJson, handleFormSubmit };
+export { formatTime, updateDateTime, fetchJSON, handleFormSubmit };

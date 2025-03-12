@@ -1,29 +1,28 @@
-// Initialize map
-const map = L.map('map').setView([51.505, -0.09], 13);
+// Initialize the map
+function initMap() {
+    const map = L.map('map').setView([51.505, -0.09], 13);
 
-// Add tile layer
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-// Add weather data layer
-const weatherLayer = L.layerGroup().addTo(map);
+    // Fetch weather data for the map
+    fetchWeatherDataForMap(map);
+}
 
-// Function to update weather layer
-const updateWeatherLayer = (data) => {
-    weatherLayer.clearLayers();
-    data.forEach(point => {
-        L.marker([point.lat, point.lon]).addTo(weatherLayer)
-          .bindPopup(`<b>${point.weather}</b><br>${point.temp}°C`);
-    });
-};
-
-// Example function to fetch weather data and update map
-const fetchWeatherDataForMap = async () => {
+// Fetch weather data for the map
+async function fetchWeatherDataForMap(map) {
     const response = await fetch('/api/weather-data');
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data = await response.json();
-    updateWeatherLayer(data);
-};
 
-// Call the function to fetch weather data and update map
-fetchWeatherDataForMap();
+    // Add weather data to the map
+    data.forEach((weather) => {
+        const marker = L.marker([weather.coord.lat, weather.coord.lon]).addTo(map);
+        marker.bindPopup(`<b>${weather.name}</b><br>${weather.weather[0].description}`);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initMap);
