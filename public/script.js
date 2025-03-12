@@ -98,28 +98,30 @@ const profileForm = document.querySelector('#profile-form');
 const profilePictureInput = document.querySelector('#profile-picture-input');
 const profilePicture = document.querySelector('#profile-picture');
 
-profileForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('profile-picture', profilePictureInput.files[0]);
+if (profileForm) {
+    profileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('profile-picture', profilePictureInput.files[0]);
 
-    try {
-        const response = await fetch('/upload-profile-picture', {
-            method: 'POST',
-            body: formData
-        });
+        try {
+            const response = await fetch('/upload-profile-picture', {
+                method: 'POST',
+                body: formData
+            });
 
-        if (response.ok) {
-            const data = await response.json();
-            profilePicture.src = data.profilePictureUrl;
-            alert('Profile picture uploaded successfully');
-        } else {
+            if (response.ok) {
+                const data = await response.json();
+                profilePicture.src = data.profilePictureUrl;
+                alert('Profile picture uploaded successfully');
+            } else {
+                alert('Error uploading profile picture');
+            }
+        } catch (error) {
             alert('Error uploading profile picture');
         }
-    } catch (error) {
-        alert('Error uploading profile picture');
-    }
-});
+    });
+}
 
 // API key for weather data (get your own from https://openweathermap.org/api)
 const API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
@@ -314,52 +316,56 @@ updateDateTime();
 // User authentication and city save functions
 
 // Register user
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(registerForm);
-    const data = Object.fromEntries(formData.entries());
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(registerForm);
+        const data = Object.fromEntries(formData.entries());
 
-    try {
-        const response = await fetch('/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-        if (response.ok) {
-            alert('User registered successfully');
-            // Stay on the same page and update UI if needed
-        } else {
+            if (response.ok) {
+                alert('User registered successfully');
+                // Stay on the same page and update UI if needed
+            } else {
+                alert('Error registering user');
+            }
+        } catch (error) {
             alert('Error registering user');
         }
-    } catch (error) {
-        alert('Error registering user');
-    }
-});
+    });
+}
 
 // Login user
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(loginForm);
-    const data = Object.fromEntries(formData.entries());
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        const data = Object.fromEntries(formData.entries());
 
-    try {
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-        if (response.ok) {
-            alert('User logged in successfully');
-            // Stay on the same page and update UI if needed
-        } else {
+            if (response.ok) {
+                alert('User logged in successfully');
+                // Stay on the same page and update UI if needed
+            } else {
+                alert('Error logging in user');
+            }
+        } catch (error) {
             alert('Error logging in user');
         }
-    } catch (error) {
-        alert('Error logging in user');
-    }
-});
+    });
+}
 
 // Save city
 saveCityForm.addEventListener('submit', async (e) => {
@@ -553,86 +559,173 @@ const profileForm = document.querySelector('#profile-form');
 const profilePictureInput = document.querySelector('#profile-picture-input');
 const profilePicture = document.querySelector('#profile-picture');
 
-profileForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('profile-picture', profilePictureInput.files[0]);
+if (profileForm) {
+    profileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('profile-picture', profilePictureInput.files[0]);
 
-    try {
-        const response = await fetch('/upload-profile-picture', {
-            method: 'POST',
-            body: formData
-        });
+        try {
+            const response = await fetch('/upload-profile-picture', {
+                method: 'POST',
+                body: formData
+            });
 
-        if (response.ok) {
-            const data = await response.json();
-            profilePicture.src = data.profilePictureUrl;
-            alert('Profile picture uploaded successfully');
-        } else {
+            if (response.ok) {
+                const data = await response.json();
+                profilePicture.src = data.profilePictureUrl;
+                alert('Profile picture uploaded successfully');
+            } else {
+                alert('Error uploading profile picture');
+            }
+        } catch (error) {
             alert('Error uploading profile picture');
         }
-    } catch (error) {
-        alert('Error uploading profile picture');
-    }
-});
+    });
+}
 
 // Register user
 const registerForm = document.querySelector('#register-form');
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(registerForm);
-    const data = Object.fromEntries(formData.entries());
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(registerForm);
+        const data = Object.fromEntries(formData.entries());
 
-    try {
-        const response = await fetch('/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
 
-        if (response.ok) {
-            alert('User registered successfully');
-            // Stay on the same page and update UI if needed
-        } else {
+            if (response.ok) {
+                alert('Registration successful');
+            } else {
+                alert('Error registering user');
+            }
+        } catch (error) {
             alert('Error registering user');
         }
-    } catch (error) {
-        alert('Error registering user');
-    }
-});
+    });
+}
 
 // Login user
 const loginForm = document.querySelector('#login-form');
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(loginForm);
-    const data = Object.fromEntries(formData.entries());
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        const data = Object.fromEntries(formData.entries());
 
-    try {
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
 
-        if (response.ok) {
-            alert('User logged in successfully');
-            // Stay on the same page and update UI if needed
-        } else {
+            if (response.ok) {
+                alert('Login successful');
+            } else {
+                alert('Error logging in user');
+            }
+        } catch (error) {
             alert('Error logging in user');
         }
-    } catch (error) {
-        alert('Error logging in user');
-    }
-});
+    });
+}
 
 // filepath: c:\Users\Artsy\Downloads\mini_project_1-1\public\script.js
-if (typeof recognition === 'undefined') {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.onresult = (event) => {
-        const command = event.results[0][0].transcript;
-        if (command.includes('weather')) {
-            fetchWeather('current location');
-        }
-    };
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const voiceCommandButton = document.getElementById('voice-command');
+    if (voiceCommandButton) {
+        voiceCommandButton.addEventListener('click', () => {
+            recognition.start();
+        });
+    }
+
+    const profileForm = document.querySelector('#profile-form');
+    if (profileForm) {
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('profile-picture', profilePictureInput.files[0]);
+
+            try {
+                const response = await fetch('/upload-profile-picture', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    profilePicture.src = data.profilePictureUrl;
+                    alert('Profile picture uploaded successfully');
+                } else {
+                    alert('Error uploading profile picture');
+                }
+            } catch (error) {
+                alert('Error uploading profile picture');
+            }
+        });
+    }
+
+    const registerForm = document.querySelector('#register-form');
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(registerForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('Registration successful');
+                } else {
+                    alert('Error registering user');
+                }
+            } catch (error) {
+                alert('Error registering user');
+            }
+        });
+    }
+
+    const loginForm = document.querySelector('#login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(loginForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('Login successful');
+                } else {
+                    alert('Error logging in user');
+                }
+            } catch (error) {
+                alert('Error logging in user');
+            }
+        });
+    }
+});
