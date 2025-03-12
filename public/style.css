@@ -8,7 +8,7 @@
 
 /* Body Styles */
 body {
-    background: url('images/background.jpg') no-repeat center center fixed;
+    background: url('images/clear-sky-day.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     display: flex;
@@ -18,8 +18,6 @@ body {
     min-height: 100vh;
     text-align: center;
     transition: background 0.3s ease;
-    font-family: 'Roboto', sans-serif;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add text shadow for better readability */
 }
 
 /* Header Styles */
@@ -171,14 +169,15 @@ header {
 }
 
 .weather-stats {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .weather-stats div {
-    width: 45%;
-    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 .weather-stats strong {
@@ -306,7 +305,7 @@ header {
 
 .spinner {
     border: 8px solid rgba(255, 255, 255, 0.1);
-    border-top: 8px solid #FFA07A; /* Warm Orange */
+    border-top: 8px solid #fff;
     border-radius: 50%;
     width: 50px;
     height: 50px;
