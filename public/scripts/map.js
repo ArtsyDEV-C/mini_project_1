@@ -11,18 +11,20 @@ function initMap() {
 }
 
 // Fetch weather data for the map
-async function fetchWeatherDataForMap(map) {
-    const response = await fetch('/api/weather-data');
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+const fetchWeatherDataForMap = async () => {
+    try {
+        const response = await fetch('/api/weather-data');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        updateWeatherLayer(data);
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
     }
-    const data = await response.json();
+};
 
-    // Add weather data to the map
-    data.forEach((weather) => {
-        const marker = L.marker([weather.coord.lat, weather.coord.lon]).addTo(map);
-        marker.bindPopup(`<b>${weather.name}</b><br>${weather.weather[0].description}`);
-    });
-}
+// Call the function to fetch weather data and update map
+fetchWeatherDataForMap();
 
 document.addEventListener('DOMContentLoaded', initMap);

@@ -112,16 +112,20 @@
         // Chat bubble toggle
         const chatBubble = document.getElementById('chat-bubble');
         const chatContainer = document.getElementById('chat-container');
-        chatBubble.addEventListener('click', () => {
-            chatContainer.classList.toggle('active');
-        });
+        if (chatBubble && chatContainer) {
+            chatBubble.addEventListener('click', () => {
+                chatContainer.classList.toggle('active');
+            });
+        }
 
         // Search button functionality
         const searchButton = document.getElementById('search-button');
-        searchButton.addEventListener('click', () => {
-            const city = document.getElementById('search-input').value;
-            fetchWeather(city);
-        });
+        if (searchButton) {
+            searchButton.addEventListener('click', () => {
+                const city = document.getElementById('search-input').value;
+                fetchWeather(city);
+            });
+        }
     </script>
 </body>
 </html>
