@@ -65,11 +65,25 @@ const weatherMusic = {
     "windy": "music/windy.mp3"
 };
 
-const API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
+let API_KEY = '';
+
+// Fetch the API key from the backend
+async function fetchApiKey() {
+    try {
+        const response = await fetch('/api/get-api-key');
+        const data = await response.json();
+        API_KEY = data.apiKey;
+    } catch (error) {
+        console.error('Error fetching API key:', error);
+    }
+}
 
 // Function to fetch weather data
 export async function fetchWeather(city) {
     try {
+        if (!API_KEY) {
+            await fetchApiKey();
+        }
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -189,6 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 navigator.geolocation.getCurrentPosition(async (position) => {
     try {
+        if (!API_KEY) {
+            await fetchApiKey();
+        }
         const { latitude, longitude } = position.coords;
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
         const response = await fetch(url);
@@ -232,6 +249,9 @@ function updateWeatherLayer(data) {
 // Example function to fetch weather data and update map
 const fetchWeatherDataForMap = async () => {
     try {
+        if (!API_KEY) {
+            await fetchApiKey();
+        }
         const response = await fetch('/api/weather-data');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

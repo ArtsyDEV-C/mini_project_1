@@ -194,6 +194,11 @@ app.get('/api/preferences/:userId', async (req, res) => {
   }
 });
 
+// Route to provide the API key to the frontend
+app.get('/api/get-api-key', (req, res) => {
+    res.json({ apiKey: process.env.OPENWEATHERMAP_API_KEY });
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
