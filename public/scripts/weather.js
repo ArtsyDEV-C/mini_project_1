@@ -190,9 +190,6 @@ function updateWeatherLayer(data) {
     console.log('Weather layer updated with:', data);
 }
 
-// Export the function if needed
-export { updateWeatherLayer };
-
 // Example function to fetch weather data and update map
 const fetchWeatherDataForMap = async () => {
     const response = await fetch('/api/weather-data');
