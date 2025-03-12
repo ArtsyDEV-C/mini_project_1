@@ -1,5 +1,3 @@
-import { updateWeatherLayer } from './file-path';
-
 const weatherBackgrounds = {
     "clear-day": "images/clear-sky-day.jpg",
     "clear-night": "images/clear-sky-night.jpg",
@@ -192,12 +190,15 @@ function updateWeatherLayer(data) {
 
 // Example function to fetch weather data and update map
 const fetchWeatherDataForMap = async () => {
-    const response = await fetch('/api/weather-data');
-    const data = await response.json();
     try {
+        const response = await fetch('/api/weather-data');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
         updateWeatherLayer(data);
     } catch (error) {
-        console.error('Error calling updateWeatherLayer:', error);
+        console.error('Error fetching weather data:', error);
     }
 };
 
