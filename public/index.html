@@ -16,7 +16,7 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="/images/globe-cat-icon.png" alt="Globe Cat Icon">
+                <video src="/videos/logo.mp4" autoplay loop muted id="logo-video"></video>
                 <h1 class="website-title">Neko Global Weather</h1>
             </div>
             <ul class="nav-links">
@@ -104,6 +104,13 @@
         const chatContainer = document.getElementById('chat-container');
         chatBubble.addEventListener('click', () => {
             chatContainer.classList.toggle('active');
+        });
+
+        // Search button functionality
+        const searchButton = document.getElementById('search-button');
+        searchButton.addEventListener('click', () => {
+            const city = document.getElementById('search-input').value;
+            fetchWeather(city);
         });
     </script>
 </body>

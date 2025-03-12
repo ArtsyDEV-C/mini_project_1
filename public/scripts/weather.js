@@ -65,7 +65,7 @@ const weatherMusic = {
     "windy": "music/windy.mp3"
 };
 
-const API_KEY = 'YOUR_API_KEY_HERE'; // Replace with your actual API key
+const API_KEY = '2149cbc5da7384b8ef7bcccf62b0bf68';
 
 // Function to fetch weather data
 async function fetchWeather(city) {

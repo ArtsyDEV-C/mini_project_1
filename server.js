@@ -16,6 +16,7 @@ const mongoose = require('mongoose');
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 8080;
 
 // Connect to MongoDB
 connectDB();
@@ -62,6 +63,19 @@ const sendEmailAlert = (to, subject, message) => {
   };
   sgMail.send(msg);
 };
+
+// Define the getWeatherData function
+async function getWeatherData(city) {
+    const API_KEY = process.env.OPENWEATHERMAP_API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`;
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching weather data:', error.message);
+        throw error;
+    }
+}
 
 // Routes
 app.post('/register', async (req, res) => {
@@ -147,12 +161,12 @@ app.post('/send-emergency-alert', (req, res) => {
 
 // Example route to fetch weather data for map
 app.get('/api/weather-data', async (req, res) => {
+  const city = req.query.city || 'New York';
   try {
-    const weatherData = await getWeatherData(); // Implement this function to fetch weather data
+    const weatherData = await getWeatherData(city);
     res.json(weatherData);
   } catch (error) {
-    console.error('Error fetching weather data:', error);
-    res.status(500).send('Error fetching weather data');
+    res.status(500).json({ error: 'Error fetching weather data' });
   }
 });
 
@@ -181,5 +195,6 @@ app.get('/api/preferences/:userId', async (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
