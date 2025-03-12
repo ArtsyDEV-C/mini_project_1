@@ -148,57 +148,10 @@ function updateWeatherUI(data) {
     }
 
     // Update background image
-    const weatherBackgrounds = {
-        "clear-day": "images/clear-sky-day.jpg",
-        "clear-night": "images/clear-sky-night.jpg",
-        "cloudy-day": "images/cloudy-sky-day.jpg",
-        "cloudy-night": "images/cloudy-sky-night.jpg",
-        "rainy-day": "images/rainy-sky-day.jpg",
-        "rainy-night": "images/rainy-sky-night.jpg",
-        "snowy-day": "images/snowy-sky-day.jpg",
-        "snowy-night": "images/snowy-sky-night.jpg",
-        "thunderstorm-day": "images/thunderstorm-sky-day.jpg",
-        "thunderstorm-night": "images/thunderstorm-sky-night.jpg",
-        "hazy-day": "images/hazy-sky-day.jpg",
-        "hazy-night": "images/hazy-sky-night.jpg",
-        "foggy-morning": "images/foggy-sky-day.jpg",
-        "foggy-night": "images/foggy-sky-night.jpg",
-        "windy-morning": "images/windy-sky-day.jpg",
-        "windy-night": "images/windy-sky-night.jpg",
-    };
-
     const weatherBackground = weatherBackgrounds[weather.icon] || "images/default.jpg";
     document.body.style.backgroundImage = `url(${weatherBackground})`;
 
     // Update cat animation
-    const weatherVideos = {
-        "clear-morning": "videos/clear-morning-cat.mp4",
-        "clear-evening": "videos/clear-evening-cat.mp4",
-        "clear-night": "videos/clear-night-cat.mp4",
-        "cloudy-morning": "videos/cloudy-morning-cat.mp4",
-        "cloudy-evening": "videos/cloudy-evening-cat.mp4",
-        "cloudy-night": "videos/cloudy-night-cat.mp4",
-        "foggy-morning": "videos/foggy-morning-cat.mp4",
-        "foggy-evening": "videos/foggy-evening-cat.mp4",
-        "foggy-night": "videos/foggy-night-cat.mp4",
-        "rain-morning": "videos/rainy-morning-cat.mp4",
-        "rain-evening": "videos/rainy-evening-cat.mp4",
-        "rain-night": "videos/rainy-night-cat.mp4",
-        "snowy-morning": "videos/snowy-morning-cat.mp4",
-        "snowy-evening": "videos/snowy-evening-cat.mp4",
-        "snowy-night": "videos/snowy-night-cat.mp4",
-        "sunny-morning": "videos/sunny-morning-cat.mp4",
-        "sunny-evening": "videos/sunny-evening-cat.mp4",
-        "sunny-night": "videos/sunny-night-cat.mp4",
-        "thunderstorm-morning": "videos/thunderstorm-morning-cat.mp4",
-        "thunderstorm-evening": "videos/thunderstorm-evening-cat.mp4",
-        "thunderstorm-night": "videos/thunderstorm-night-cat.mp4",
-        "windy-morning": "videos/windy-morning-cat.mp4",
-        "windy-evening": "videos/windy-evening-cat.mp4",
-        "windy-night": "videos/windy-night-cat.mp4",
-        "default": "videos/default.mp4"
-    };
-
     const weatherVideo = weatherVideos[weather.icon] || "videos/default.mp4";
     const aiCatVideo = document.getElementById('ai-cat-video');
     if (aiCatVideo) {
@@ -206,17 +159,6 @@ function updateWeatherUI(data) {
     }
 
     // Update weather-related music
-    const weatherMusic = {
-        "clear": "music/sunny.mp3",
-        "cloudy": "music/cloudy.mp3",
-        "rainy": "music/rain.mp3",
-        "snowy": "music/snow.mp3",
-        "thunderstorm": "music/thunderstorm.mp3",
-        "hazy": "music/hazy.mp3",
-        "foggy": "music/foggy.mp3",
-        "windy": "music/windy.mp3"
-    };
-
     const weatherMusicFile = weatherMusic[weather.icon] || "music/default.mp3";
     const audioElement = document.getElementById('weather-music');
     if (audioElement) {
