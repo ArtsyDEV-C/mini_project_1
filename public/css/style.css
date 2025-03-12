@@ -1,295 +1,105 @@
-/* General Reset and Styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Poppins', 'Nunito', 'Montserrat', sans-serif;
-    background: url('/images/default.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-    overflow-x: hidden;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-  }
-  
-  /* Header & Navbar */
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    backdrop-filter: blur(10px);
-    background: rgba(0,0,0,0.4);
-    z-index: 1000;
+/* Updated CSS Fixes Clearly for UI Alignment and Responsiveness */
+
+/* Fix header and navigation clearly */
+header {
+    padding: 10px 0;
   }
   
   .navbar {
-    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
+    padding: 10px;
   }
   
   .logo-video {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    width: 60px;
+    height: 60px;
   }
   
   .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .nav-links a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s;
+    padding: 5px 10px;
   }
   
-  .nav-links a:hover {
-    color: #ffa07a;
-  }
-  
-  /* Search Section */
+  /* Search section spacing clearly */
   .search-section {
-    margin-top: 120px;
-    text-align: center;
+    margin-top: 150px; /* extra spacing due to fixed header */
   }
   
-  .search-bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  
-  .search-bar input {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    border-radius: 25px;
-    border: none;
-    outline: none;
-  }
-  
-  .search-bar button {
-    padding: 10px 20px;
-    border-radius: 25px;
-    background: #ffa07a;
-    border: none;
-    cursor: pointer;
-    color: white;
-  }
-  
-  .search-video {
-    display: none;
-  }
-  
-  /* Weather Card */
+  /* Weather Card clearly adjusted */
   .weather-display {
+    margin-top: 20px;
     display: flex;
     justify-content: center;
-    margin-top: 30px;
   }
   
   .weather-card {
-    background: rgba(0,0,0,0.6);
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
     width: 100%;
-    max-width: 500px;
-  }
-  
-  .weather-card img {
-    width: 100px;
-    height: auto;
-  }
-  
-  .weather-stats {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    text-align: left;
-  }
-  
-  /* 10-Day Weather Forecast Section */
-  .forecast-section {
-    margin-top: 50px;
-  }
-  
-  .forecast-section h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .forecast-cards {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
-  
-  .forecast-card {
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px);
+    max-width: 400px;
     padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    min-width: 150px;
-  }
-  
-  .forecast-card img {
-    width: 50px;
-    height: auto;
-    margin: 10px 0;
-  }
-  
-  /* Interactive Map Section */
-  #map {
-    height: 500px;
-    width: 100%;
+    background: rgba(0,0,0,0.7);
     border-radius: 15px;
-    overflow: hidden;
-    margin-top: 30px;
-  }
-  
-  /* AI Cat Insights */
-  .ai-cat-insights {
-    margin-top: 50px;
+    backdrop-filter: blur(8px);
     text-align: center;
+    color: #fff;
+    font-size: 14px;
   }
   
-  .ai-cat-insights video, 
+  /* AI Cat Insight - controlled sizing */
+  .ai-cat-insights video,
   .ai-cat-insights img {
-    max-width: 100%;
-    border-radius: 15px;
-    margin: 10px auto;
-  }
-  
-  /* Chatbot Section */
-  .chatbot-section {
-    margin-top: 50px;
-    text-align: center;
-  }
-  
-  #chat-container {
-    background: rgba(0,0,0,0.6);
-    border-radius: 15px;
-    padding: 15px;
+    width: 100%;
     max-width: 600px;
-    margin: auto;
-  }
-  
-  #chatbox {
-    height: 200px;
-    overflow-y: auto;
-    margin-bottom: 10px;
-    background: rgba(255,255,255,0.1);
-    padding: 10px;
-    border-radius: 10px;
-  }
-  
-  #chat-input {
-    width: 70%;
-    padding: 8px;
-    border-radius: 10px;
-    border: none;
-    margin-right: 5px;
-  }
-  
-  #send-btn {
-    padding: 8px 15px;
-    border-radius: 10px;
-    background: #ffa07a;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  /* Footer */
-  footer {
-    text-align: center;
-    margin-top: 50px;
-    padding: 20px;
-    background: rgba(0,0,0,0.6);
+    height: auto;
     border-radius: 15px;
   }
   
-  .footer-video {
-    max-width: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-  
-  /* Speak Button */
-  #speak-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 15px;
-    border-radius: 50px;
-    background-color: #ff8c00;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  /* Scrollbar Styling (Optional) */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(255,255,255,0.4);
-    border-radius: 10px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .navbar, .search-bar, .weather-display, .forecast-cards {
+  /* Responsive fixes clearly for smaller screens */
+  @media (max-width: 992px) {
+    .navbar {
       flex-direction: column;
-    }
-  
-    .forecast-card {
-      width: 100%;
-    }
-  
-    .container {
-      padding: 15px;
-    }
-  
-    header {
-      padding-bottom: 10px;
-    }
-  
-    .nav-links {
       gap: 10px;
-      margin-top: 10px;
     }
   
     .search-section {
-      margin-top: 150px;
+      margin-top: 180px;
     }
+  
+    .weather-display,
+    .forecast-section,
+    .map-section,
+    .ai-cat-insights,
+    .chatbot-section {
+      padding: 10px;
+    }
+  
+    .forecast-cards {
+      flex-direction: column;
+    }
+  
+    #map {
+      height: 300px;
+    }
+  }
+  
+  /* Fix for forecast heading spacing */
+  .forecast-section h2,
+  .map-section h2,
+  .ai-cat-insights h2,
+  .chatbot-section h2 {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  /* Additional Background Fix */
+  body {
+    background-size: cover;
+    background-position: center;
   }
   
