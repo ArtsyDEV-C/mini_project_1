@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const searchButton = document.getElementById('search-button');
+    if (searchButton) {
+        searchButton.addEventListener('click', () => {
+            const city = document.getElementById('search-input').value;
+            fetchWeather(city);
+        });
+    }
+
     const chatBubble = document.getElementById('chat-bubble');
     const chatContainer = document.getElementById('chat-container');
     const sendButton = document.getElementById('send-btn');
