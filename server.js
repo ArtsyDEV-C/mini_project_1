@@ -1,10 +1,11 @@
+require('dotenv').config(); // Load environment variables
+
 const express = require('express');
 const session = require('express-session');
 const passport = require('./config/passport');
 const connectDB = require('./db'); // Import the connectDB function from db.js
 const User = require('./models/User');
 const City = require('./models/City');
-const dotenv = require('dotenv');
 const methodOverride = require('method-override');
 const axios = require('axios');
 const cors = require('cors');
@@ -12,8 +13,6 @@ const twilio = require('twilio');
 const sgMail = require('@sendgrid/mail');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
