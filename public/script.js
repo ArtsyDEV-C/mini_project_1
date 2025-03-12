@@ -445,14 +445,15 @@ const fetchWeatherDataForMap = async () => {
 fetchWeatherDataForMap();
 
 // Example using Web Speech API
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.onresult = (event) => {
-  const command = event.results[0][0].transcript;
-  if (command.includes('weather')) {
-    fetchWeather('current location');
-  }
-};
-recognition.start();
+if (typeof recognition === 'undefined') {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.onresult = (event) => {
+        const command = event.results[0][0].transcript;
+        if (command.includes('weather')) {
+            fetchWeather('current location');
+        }
+    };
+}
 
 // Example using Three.js
 const scene = new THREE.Scene();
@@ -529,18 +530,11 @@ fetchWeatherDataAndSuggestTravelTimes();
 
 // Voice Command Button
 const voiceCommandButton = document.getElementById('voice-command');
-voiceCommandButton.addEventListener('click', () => {
-    recognition.start();
-});
-
-// Example using Web Speech API
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.onresult = (event) => {
-  const command = event.results[0][0].transcript;
-  if (command.includes('weather')) {
-    fetchWeather('current location');
-  }
-};
+if (voiceCommandButton) {
+    voiceCommandButton.addEventListener('click', () => {
+        recognition.start();
+    });
+}
 
 function onSignIn(googleUser) {
     const profile = googleUser.getBasicProfile();
@@ -631,3 +625,14 @@ loginForm.addEventListener('submit', async (e) => {
         alert('Error logging in user');
     }
 });
+
+// filepath: c:\Users\Artsy\Downloads\mini_project_1-1\public\script.js
+if (typeof recognition === 'undefined') {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.onresult = (event) => {
+        const command = event.results[0][0].transcript;
+        if (command.includes('weather')) {
+            fetchWeather('current location');
+        }
+    };
+}

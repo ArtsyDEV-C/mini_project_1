@@ -1,3 +1,4 @@
+/* filepath: c:\Users\Artsy\Downloads\mini_project_1-1\public\style.css */
 /* Global Styles */
 * {
     margin: 0;
@@ -8,7 +9,7 @@
 
 /* Body Styles */
 body {
-    background: url('images/clear-sky-day.jpg') no-repeat center center fixed;
+    background: url('images/background.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     display: flex;
@@ -155,7 +156,6 @@ header {
     width: 80%;
     max-width: 600px;
     text-align: left;
-    color: #FFFFFF; /* White */
 }
 
 .weather-info {
@@ -262,23 +262,6 @@ header {
     background-color: #f78f00;
 }
 
-/* Travel Suggestions Section */
-.travel-suggestions-container {
-    margin-top: 20px;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-}
-
-.travel-suggestions-container h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #ff9f00;
-}
-
 /* Video Section */
 #weather-video {
     margin-top: 30px;
@@ -300,7 +283,6 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
 }
 
 .spinner {
@@ -409,25 +391,6 @@ footer {
     #search-video {
         display: none;
     }
-
-    .auth-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .auth-form {
-        width: 80%;
-        margin-bottom: 20px;
-    }
-
-    .search-bar input {
-        width: 80%;
-    }
-
-    .search-bar button {
-        width: 80%;
-        margin-top: 10px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -450,58 +413,4 @@ footer {
     #weather-video {
         height: 300px;
     }
-}
-
-/* Additional Styles */
-#map {
-    margin-top: 20px;
-    border-radius: 10px;
-    height: 500px;
-    width: 100%;
-}
-
-#play-music {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #ff9f00;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#play-music:hover {
-    background-color: #f78f00;
-}
-
-button {
-    background-color: #FFA07A; /* Warm Orange */
-    color: #FFFFFF; /* White */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-button:hover {
-    background-color: #FF8C00; /* Darker Orange */
-    transform: scale(1.05);
-}
-
-input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus, input[type="password"]:focus {
-    border-color: #FFA07A; /* Warm Orange */
-    outline: none;
 }

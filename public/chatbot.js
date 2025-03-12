@@ -1,33 +1,24 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const chatbox = document.getElementById("chatbox");
-    const input = document.getElementById("chat-input");
-    const sendButton = document.getElementById("send-btn");
-  
-    sendButton.addEventListener("click", async function () {
-      const userMessage = input.value.trim();
-      if (userMessage === "") return;
-  
-      // Display user message
-      chatbox.innerHTML += `<div class="message user">${userMessage}</div>`;
-  
-      // Send request to chatbot API
-      const response = await fetch("/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
-      });
-  
-      const data = await response.json();
-      const botReply = data.response;
-  
-      // Display chatbot response
-      chatbox.innerHTML += `<div class="message bot">${botReply}</div>`;
-      
-      // Scroll to bottom
-      chatbox.scrollTop = chatbox.scrollHeight;
-      
-      // Clear input
-      input.value = "";
-    });
-  });
-  
+document.addEventListener('DOMContentLoaded', () => {
+    const chatBubble = document.getElementById('chat-bubble');
+    const chatContainer = document.getElementById('chat-container');
+    const sendButton = document.getElementById('send-btn');
+    const chatInput = document.getElementById('chat-input');
+
+    if (chatBubble) {
+        chatBubble.addEventListener('click', () => {
+            chatContainer.classList.toggle('active');
+        });
+    }
+
+    if (sendButton) {
+        sendButton.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                // Handle sending message to chatbot
+                chatInput.value = '';
+            } else {
+                alert('Please enter a message!');
+            }
+        });
+    }
+});
