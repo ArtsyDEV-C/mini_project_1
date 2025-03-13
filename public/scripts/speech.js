@@ -21,16 +21,4 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     speakButton.addEventListener('click', speakWeather);
-
-    // Voice recognition for weather search
-    if (typeof window !== "undefined" && !window.recognition) {
-        window.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        window.recognition.lang = "en-US";
-
-        window.recognition.onresult = (event) => {
-            const command = event.results[0][0].transcript;
-            console.log("Speech recognized:", command);
-            // Add logic to handle the recognized speech command
-        };
-    }
 });
